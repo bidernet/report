@@ -1,8 +1,22 @@
-# Sensitive files - NEVER commit these!
+# =================================================================
+# .gitignore - אל תעלה את הקבצים האלה ל-GitHub!
+# =================================================================
+
+# 🔒 קובץ הגדרות עם סיסמאות - אסור ב-GitHub!
 api/config.php
-.env
-*.log
+
+# 🔒 לוגים - לא לעלות (יכולים להכיל מידע רגיש)
 logs/*.log
+*.log
+
+# 🔒 קבצי התקנה - אמורים להיות מחוקים מהשרת אחרי התקנה
+install.php
+server-check.php
+
+# 🔒 משתני סביבה
+.env
+.env.local
+.env.production
 
 # OS files
 .DS_Store
@@ -21,5 +35,10 @@ desktop.ini
 *.bak
 *.backup
 
-# After installation
-install.php
+# Composer (אם בעתיד)
+vendor/
+composer.lock
+
+# Node modules (אם בעתיד)
+node_modules/
+npm-debug.log
