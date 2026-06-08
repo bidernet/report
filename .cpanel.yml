@@ -1,59 +1,19 @@
 # =================================================================
-# .cpanel.yml - GitHub to cPanel Deployment Configuration
+# .cpanel.yml - GitHub -> cPanel auto-deploy for report.bidernet.co.il
+# Live docroot: public_html/report.bidernet.co.il
+# api/config.php is NEVER overwritten (DB creds/secrets live there).
+# install.php / server-check.php are NEVER published (security).
+# Backend (api/ sql/ docs/) deploys only if present in the repo.
 # =================================================================
-# קובץ זה מאפשר ל-cPanel לפרוס שינויים אוטומטית מ-GitHub
-# כשתלחץ "Deploy HEAD Commit" - הקבצים יועתקו מ-repo לתיקיית האתר
-# 
-# חשוב: api/config.php לא יוחלף (כדי לא לאבד פרטי DB)
-
 ---
 deployment:
   tasks:
-    # נתיב היעד באתר - שנה אם הדומיין שלך במקום אחר
-    - export DEPLOYPATH=/home/biderne1/public_html/report/
-    
-    # יצירת תיקיות במידת הצורך
-    - /bin/mkdir -p $DEPLOYPATH/api
-    - /bin/mkdir -p $DEPLOYPATH/sql
-    - /bin/mkdir -p $DEPLOYPATH/docs
-    - /bin/mkdir -p $DEPLOYPATH/logs
-    
-    # === העתקת קבצים ראשיים ===
-    - /bin/cp index.html $DEPLOYPATH
-    - /bin/cp login.html $DEPLOYPATH
-    - /bin/cp .htaccess $DEPLOYPATH
-    - /bin/cp README.md $DEPLOYPATH
-    - /bin/cp CHANGELOG.md $DEPLOYPATH
-    - /bin/cp VERSION $DEPLOYPATH
-    
-    # === קבצי API (חוץ מ-config.php!) ===
-    - /bin/cp api/.htaccess $DEPLOYPATH/api/
-    - /bin/cp api/auth.php $DEPLOYPATH/api/
-    - /bin/cp api/campaigns.php $DEPLOYPATH/api/
-    - /bin/cp api/clients.php $DEPLOYPATH/api/
-    - /bin/cp api/db.php $DEPLOYPATH/api/
-    - /bin/cp api/facebook-proxy.php $DEPLOYPATH/api/
-    - /bin/cp api/helpers.php $DEPLOYPATH/api/
-    - /bin/cp api/users.php $DEPLOYPATH/api/
-    - /bin/cp api/config.sample.php $DEPLOYPATH/api/
-    
-    # === קבצי SQL ותיעוד ===
-    - /bin/cp sql/schema.sql $DEPLOYPATH/sql/
-    - /bin/cp docs/INSTALL.md $DEPLOYPATH/docs/
-    - /bin/cp docs/API.md $DEPLOYPATH/docs/
-    
-    # === אם config.php עדיין לא קיים בשרת - צור אותו מהדוגמה ===
-    - /bin/test -f $DEPLOYPATH/api/config.php || /bin/cp api/config.sample.php $DEPLOYPATH/api/config.php
-    
-    # === הרשאות נכונות ===
-    - /bin/chmod 644 $DEPLOYPATH/api/*.php
-    - /bin/chmod 755 $DEPLOYPATH/logs
-    - /bin/chmod 600 $DEPLOYPATH/api/config.php
-    
-    # ===========================================
-    # קבצים שלא יוחלפו אוטומטית (לאבטחה):
-    # - api/config.php (פרטי DB וסיסמאות)
-    # - install.php (אמור להיות מחוק)
-    # - server-check.php (אמור להיות מחוק)
-    # - logs/* (יומני שגיאות)
-    # ===========================================
+    - export DEPLOYPATH=/home/biderne1/public_html/report.bidernet.co.il
+    - /bin/mkdir -p "$DEPLOYPATH/api" "$DEPLOYPATH/logs"
+    - /bin/cp -f index.html login.html .htaccess README.md CHANGELOG.md VERSION "$DEPLOYPATH/"
+    - /usr/bin/rsync -a --exclude=config.php api/ "$DEPLOYPATH/api/" 2>/dev/null || true
+    - /usr/bin/rsync -a sql/ "$DEPLOYPATH/sql/" 2>/dev/null || true
+    - /usr/bin/rsync -a docs/ "$DEPLOYPATH/docs/" 2>/dev/null || true
+    - /bin/rm -f "$DEPLOYPATH/install.php" "$DEPLOYPATH/server-check.php"
+    - /bin/chmod 644 "$DEPLOYPATH"/api/*.php 2>/dev/null || true
+    - /bin/chmod 600 "$DEPLOYPATH/api/config.php" 2>/dev/null || true
