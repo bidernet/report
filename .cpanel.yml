@@ -6,12 +6,16 @@
 #   - install.php / server-check.php  (never published - security)
 #   - .git / .gitignore / .cpanel.yml / logs  (infra - not web content)
 # Backend (api/ sql/ docs/) deploys only if present in the repo.
+#
+# NOTE: uses --no-perms/--no-owner/--no-group so rsync does NOT clobber
+# the docroot's cpuser:nobody 750 ownership (which Apache needs to
+# traverse). Do NOT switch back to "rsync -a" - it breaks the site (403).
 # =================================================================
 ---
 deployment:
   tasks:
     - export DEPLOYPATH=/home/biderne1/public_html/report.bidernet.co.il
     - /bin/mkdir -p "$DEPLOYPATH/api" "$DEPLOYPATH/logs"
-    - /usr/bin/rsync -a --exclude=.git --exclude=.gitignore --exclude=.cpanel.yml --exclude=install.php --exclude=server-check.php --exclude=api/config.php --exclude=logs/ ./ "$DEPLOYPATH/"
+    - /usr/bin/rsync -rlt --no-perms --no-owner --no-group --exclude=.git --exclude=.gitignore --exclude=.cpanel.yml --exclude=install.php --exclude=server-check.php --exclude=api/config.php --exclude=logs/ ./ "$DEPLOYPATH/"
     - /bin/rm -f "$DEPLOYPATH/install.php" "$DEPLOYPATH/server-check.php"
     - /bin/chmod 600 "$DEPLOYPATH/api/config.php" 2>/dev/null || true
