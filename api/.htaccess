@@ -1,0 +1,15 @@
+# =================================================================
+# API folder protection
+# =================================================================
+
+# Block direct access to config and helpers
+<FilesMatch "^(config|db|helpers)\.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Allow only main API endpoints
+<FilesMatch "\.(php)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
