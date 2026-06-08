@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>מערכת דוחות קמפיינים | bidernet</title>
+<link rel="icon" type="image/jpeg" href="favicon.jpg">
+<link rel="shortcut icon" type="image/jpeg" href="favicon.jpg">
+<link rel="apple-touch-icon" href="favicon.jpg">
+<meta name="theme-color" content="#0a3a1f">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -162,11 +166,19 @@ body{
 .kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
 .kpi-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .kpi-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.kpi-icon svg{width:22px;height:22px;stroke-width:1.5}
 .kpi-icon.reach{background:var(--green-soft);color:var(--green)}
 .kpi-icon.engagement{background:var(--ig-soft);color:var(--ig)}
 .kpi-icon.leads{background:var(--fb-soft);color:var(--fb)}
 .kpi-icon.budget{background:var(--orange-soft);color:var(--orange)}
 .kpi-icon.clients{background:var(--purple-soft);color:var(--purple)}
+.kpi-icon.video{background:#f3e5f5;color:#9c27b0}
+
+/* Inline SVG icon utility - for buttons and small icons */
+.svg-icon{display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-0.125em;flex-shrink:0}
+.svg-icon svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.5}
+.icon-btn-line{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;flex-shrink:0}
+.icon-btn-line svg{width:100%;height:100%}
 .kpi-label{font-size:13px;color:var(--text-secondary);font-weight:500}
 .kpi-value{font-size:28px;font-weight:700;letter-spacing:-0.8px;color:var(--text-primary);margin-bottom:6px;line-height:1.1}
 .kpi-change{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:3px 8px;border-radius:6px}
@@ -202,6 +214,16 @@ body{
 .client-filter-label{font-size:13px;color:var(--text-secondary);font-weight:500;white-space:nowrap}
 .client-filter-select{padding:7px 12px;border-radius:8px;background:var(--bg-soft);border:1px solid var(--border);font-size:13px;font-weight:500;color:var(--text-primary);min-width:180px;cursor:pointer}
 .client-filter-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(214,240,70,0.25)}
+
+/* Date Range Filter */
+.date-filter-wrap{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;padding:10px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:11px;box-shadow:var(--shadow-sm)}
+.date-filter-label{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);font-weight:500;white-space:nowrap}
+.date-filter-tabs{display:flex;gap:4px;background:var(--bg-soft);padding:3px;border-radius:9px;border:1px solid var(--border);flex-wrap:wrap}
+.date-filter-tab{padding:6px 14px;border:none;background:transparent;font-family:inherit;font-size:12px;font-weight:500;color:var(--text-secondary);border-radius:7px;cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.date-filter-tab:hover{background:var(--bg-card);color:var(--text-primary)}
+.date-filter-tab.active{background:var(--accent);color:var(--accent-dark);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.date-filter-info{font-size:11px;color:var(--text-muted);margin-right:auto}
+.date-filter-info strong{color:var(--text-primary);font-weight:600}
 .client-context-banner{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#fafbfc 0%,#fff 100%);border:1px solid var(--border);border-right:4px solid var(--accent);border-radius:12px;padding:14px 18px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
 .client-context-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent) 0%,#a8c732 100%);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:var(--accent-dark);overflow:hidden;flex-shrink:0;border:2px solid var(--bg-card);box-shadow:0 0 0 1px var(--border)}
 .client-context-avatar img{width:100%;height:100%;object-fit:cover}
@@ -242,6 +264,47 @@ body{
 .sync-result-row:last-child{border-bottom:none}
 .sync-result-row .name{font-weight:500;color:var(--text-primary)}
 .sync-result-row .meta{font-size:11px;color:var(--text-muted)}
+
+/* === PDF CUSTOMIZATION MODAL === */
+.pdf-config-section{background:var(--bg-soft);border:1px solid var(--border);border-radius:11px;padding:14px 16px;margin-bottom:14px}
+.pdf-config-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.pdf-select-actions{font-size:11px;font-weight:400}
+.pdf-action-link{color:var(--purple);text-decoration:none;cursor:pointer}
+.pdf-action-link:hover{text-decoration:underline}
+.pdf-preset-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.pdf-preset{padding:6px 12px;border-radius:7px;border:1px solid var(--border);background:var(--bg-card);font-family:inherit;font-size:12px;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all 0.15s}
+.pdf-preset:hover{border-color:var(--accent);color:var(--text-primary)}
+.pdf-preset.active{background:var(--accent);border-color:var(--accent);color:var(--accent-dark);font-weight:600}
+.pdf-date-count{font-size:11px;color:var(--text-secondary);margin-top:6px;padding:6px 10px;background:var(--bg-card);border-radius:7px;border:1px solid var(--border)}
+.pdf-date-count.has-data{color:var(--green);background:var(--green-soft);border-color:rgba(0,184,132,0.2)}
+.pdf-date-count.no-data{color:var(--orange);background:var(--orange-soft);border-color:rgba(255,149,0,0.2)}
+.pdf-kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pdf-kpi-option{display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:13px}
+.pdf-kpi-option:hover{border-color:var(--accent);background:var(--bg-soft)}
+.pdf-kpi-option input[type="checkbox"]{width:16px;height:16px;cursor:pointer;accent-color:var(--accent)}
+.pdf-kpi-option:has(input:checked){border-color:var(--accent);background:linear-gradient(135deg,rgba(214,240,70,0.08),transparent)}
+
+.pdf-kpi-icon svg, .pdf-cb-icon svg{stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.pdf-kpi-icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.pdf-kpi-name{font-weight:500;color:var(--text-primary)}
+.pdf-section-options{display:flex;flex-direction:column;gap:8px}
+.pdf-section-option{display:flex;align-items:flex-start;gap:11px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s}
+.pdf-section-option:hover{border-color:var(--accent)}
+.pdf-section-option input[type="checkbox"]{width:16px;height:16px;cursor:pointer;accent-color:var(--accent);margin-top:2px}
+.pdf-section-option:has(input:checked){border-color:var(--accent);background:linear-gradient(135deg,rgba(214,240,70,0.08),transparent)}
+.pdf-section-option strong{display:block;color:var(--text-primary);font-size:13px;font-weight:600;margin-bottom:2px}
+.pdf-section-option small{display:block;color:var(--text-secondary);font-size:11px}
+
+/* Platform source radio options */
+.pdf-platform-filter{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pdf-platform-option{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s}
+.pdf-platform-option:hover{border-color:var(--accent)}
+.pdf-platform-option input[type="radio"]{width:16px;height:16px;cursor:pointer;accent-color:var(--accent);margin-top:2px;flex-shrink:0}
+.pdf-platform-option:has(input:checked){border-color:var(--accent);background:linear-gradient(135deg,rgba(214,240,70,0.12),transparent);box-shadow:0 0 0 1px var(--accent)}
+.pdf-platform-option strong{display:block;color:var(--text-primary);font-size:12px;font-weight:600;margin-bottom:2px}
+.pdf-platform-option small{display:block;color:var(--text-secondary);font-size:10px;line-height:1.3}
+.pdf-preview-info{background:linear-gradient(135deg,#fafbfc,#fff);border:1px solid var(--border);border-right:3px solid var(--fb);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--text-secondary);margin-bottom:14px}
+.pdf-preview-info strong{color:var(--text-primary)}
 
 /* === FORMS === */
 .form-section{
@@ -377,6 +440,9 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
   transition:all 0.15s;
   font-size:14px;
 }
+.icon-btn svg{display:block}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center}
+
 .icon-btn:hover{background:var(--bg-hover);color:var(--text-primary)}
 .icon-btn.delete:hover{color:var(--red);border-color:var(--red);background:var(--red-soft)}
 .icon-btn.view:hover{color:var(--purple);border-color:var(--purple);background:var(--purple-soft)}
@@ -537,6 +603,25 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
 </style>
 </head>
 <body>
+<svg id="icon-sprite" xmlns="http://www.w3.org/2000/svg" style="display:none;position:absolute;width:0;height:0" aria-hidden="true">
+  <symbol id="icon-reach" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.866 3.134-7 7-7s7 3.134 7 7"/><path d="M3 7l1 1M21 7l-1 1M3 13l1.5-.5M21 13l-1.5-.5"/></symbol>
+  <symbol id="icon-engagement" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><circle cx="8.5" cy="11.5" r="1" fill="currentColor"/><circle cx="12" cy="11.5" r="1" fill="currentColor"/><circle cx="15.5" cy="11.5" r="1" fill="currentColor"/></symbol>
+  <symbol id="icon-leads" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3"/><path d="M6 21v-1a6 6 0 0 1 12 0v1"/><path d="M3 7l2 2M3 11l2 2M21 7l-2 2M21 11l-2 2"/><circle cx="12" cy="13" r="0.5" fill="currentColor"/></symbol>
+  <symbol id="icon-budget" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 8v8M9 8h3.5a2.5 2.5 0 0 1 0 5H9M15 8v8"/></symbol>
+  <symbol id="icon-impressions" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="icon-clicks" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9l3 8 2-4 4-2-9-2z"/><path d="M3 3l3 1M3 8l3-1M8 3l1 3"/></symbol>
+  <symbol id="icon-ctr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></symbol>
+  <symbol id="icon-conversions" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></symbol>
+  <symbol id="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-9 9c-2.4 0-4.6-.9-6.3-2.4L4 16M3 12a9 9 0 0 1 9-9c2.4 0 4.6.9 6.3 2.4L20 8"/><path d="M3 16h4v4M21 8h-4V4"/></symbol>
+  <symbol id="icon-add" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="icon-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+  <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></symbol>
+  <symbol id="icon-pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></symbol>
+  <symbol id="icon-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 12a9 9 0 0 0-9-9v9z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="icon-video" viewBox="0 0 430 430" fill="currentColor" stroke="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M109.267 53.812a6 6 0 0 1 6.156.291l124.399 82.7h.001l109.399 72.7a6 6 0 0 1-.001 9.995l-233.8 155.3a6 6 0 0 1-9.319-4.998V59.1a6 6 0 0 1 3.165-5.288m8.835 16.482v288.318l216.957-144.113-101.878-67.702h-.001z"/></symbol>
+  <symbol id="icon-followers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 8h6M19 5v6"/></symbol>
+  <symbol id="icon-page" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+</svg>
 
 <div class="app">
   <aside class="sidebar">
@@ -602,7 +687,7 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
           <p>סקירה כללית של ביצועי הקמפיינים בפייסבוק ואינסטגרם</p>
         </div>
         <div class="header-actions">
-          <button class="btn" id="refreshBtn"><span>🔄</span> רענן</button>
+          <button class="btn" id="refreshBtn"><span class="svg-icon" style="width:14px;height:14px"><svg viewBox="0 0 24 24"><use href="#icon-refresh"/></svg></span> רענן</button>
           <button class="btn btn-primary" id="quickExport"><span>📥</span> ייצוא דוח</button>
         </div>
       </div>
@@ -620,13 +705,29 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
           </select>
         </div>
       </div>
+      
+      <!-- Date Range Filter -->
+      <div class="date-filter-wrap">
+        <div class="date-filter-label">
+          <span class="svg-icon" style="width:14px;height:14px;color:var(--text-secondary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+          <span>תקופה:</span>
+        </div>
+        <div class="date-filter-tabs" id="dateFilterTabs">
+          <button class="date-filter-tab" data-range="7">7 ימים</button>
+          <button class="date-filter-tab" data-range="14">14 ימים</button>
+          <button class="date-filter-tab" data-range="30">30 ימים</button>
+          <button class="date-filter-tab" data-range="90">3 חודשים</button>
+          <button class="date-filter-tab active" data-range="all">כל התקופה</button>
+        </div>
+        <div class="date-filter-info" id="dateFilterInfo"></div>
+      </div>
 
       <div id="clientContextBanner"></div>
 
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-top">
-            <div class="kpi-icon clients">👥</div>
+            <div class="kpi-icon clients"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 21v-1a6 6 0 0 1 12 0v1"/><circle cx="17" cy="9" r="2.5"/><path d="M14.5 19v-.5a4.5 4.5 0 0 1 7-3.7"/></svg></div>
             <div class="kpi-change neutral" id="kpi-clients-change"><span id="kpi-clients-count">0</span></div>
           </div>
           <div class="kpi-label">לקוחות פעילים</div>
@@ -634,7 +735,7 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
         </div>
         <div class="kpi-card">
           <div class="kpi-top">
-            <div class="kpi-icon reach">👁️</div>
+            <div class="kpi-icon reach"><svg viewBox="0 0 24 24"><use href="#icon-reach"/></svg></div>
             <div class="kpi-change up" id="kpi-reach-change"><span>↑</span><span>0%</span></div>
           </div>
           <div class="kpi-label">תפוצה (Reach)</div>
@@ -642,7 +743,7 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
         </div>
         <div class="kpi-card">
           <div class="kpi-top">
-            <div class="kpi-icon leads">🎯</div>
+            <div class="kpi-icon leads"><svg viewBox="0 0 24 24"><use href="#icon-leads"/></svg></div>
             <div class="kpi-change up" id="kpi-leads-change"><span>↑</span><span>0%</span></div>
           </div>
           <div class="kpi-label">לידים</div>
@@ -650,11 +751,19 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
         </div>
         <div class="kpi-card">
           <div class="kpi-top">
-            <div class="kpi-icon budget">💰</div>
+            <div class="kpi-icon budget"><svg viewBox="0 0 24 24"><use href="#icon-budget"/></svg></div>
             <div class="kpi-change up" id="kpi-budget-change"><span>↓</span><span>0%</span></div>
           </div>
           <div class="kpi-label">תקציב פרסום</div>
           <div class="kpi-value" id="kpi-budget">₪0</div>
+        </div>
+        <div class="kpi-card" id="kpi-card-video" style="display:none">
+          <div class="kpi-top">
+            <div class="kpi-icon video"><svg viewBox="0 0 24 24"><use href="#icon-video"/></svg></div>
+            <div class="kpi-change neutral" id="kpi-video-completion"><span id="kpi-video-completion-val">0%</span> סיום</div>
+          </div>
+          <div class="kpi-label">צפיות בוידאו</div>
+          <div class="kpi-value" id="kpi-video-views">0</div>
         </div>
       </div>
 
@@ -696,7 +805,7 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
           <p>ניהול כל הלקוחות והיסטוריית הדוחות שלהם</p>
         </div>
         <div class="header-actions">
-          <button class="btn btn-primary" id="addClientBtn"><span>➕</span> הוספת לקוח</button>
+          <button class="btn btn-primary" id="addClientBtn"><span class="svg-icon" style="width:14px;height:14px"><svg viewBox="0 0 24 24"><use href="#icon-add"/></svg></span> הוספת לקוח</button>
         </div>
       </div>
 
@@ -793,10 +902,10 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
           </div>
         </div>
         <div class="header-actions">
-          <button class="btn" id="clientEditBtn"><span>✏️</span> עריכה</button>
-          <button class="btn" id="clientPdfBtn"><span>📄</span> ייצוא PDF</button>
-          <button class="btn" id="clientSyncBtn" style="background:var(--fb-soft);color:var(--fb);border-color:var(--fb-soft)"><span>🔄</span> סנכרון מ-Facebook</button>
-          <button class="btn btn-primary" id="clientAddReportBtn"><span>➕</span> דוח חדש</button>
+          <button class="btn" id="clientEditBtn"><span class="svg-icon" style="width:14px;height:14px"><svg viewBox="0 0 24 24"><use href="#icon-edit"/></svg></span> עריכה</button>
+          <button class="btn" id="clientPdfBtn"><span class="svg-icon" style="width:14px;height:14px"><svg viewBox="0 0 24 24"><use href="#icon-pdf"/></svg></span> ייצוא PDF</button>
+          <button class="btn" id="clientSyncBtn" style="background:var(--fb-soft);color:var(--fb);border-color:var(--fb-soft)"><span class="svg-icon" style="width:14px;height:14px"><svg viewBox="0 0 24 24"><use href="#icon-refresh"/></svg></span> סנכרון מ-Facebook</button>
+          <button class="btn btn-primary" id="clientAddReportBtn"><span class="svg-icon" style="width:14px;height:14px"><svg viewBox="0 0 24 24"><use href="#icon-add"/></svg></span> דוח חדש</button>
         </div>
       </div>
 
@@ -930,7 +1039,7 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
           <p>רשימה מלאה של כל דוחות הקמפיינים במערכת</p>
         </div>
         <div class="header-actions">
-          <button class="btn btn-primary" id="addNewBtn"><span>➕</span> דוח חדש</button>
+          <button class="btn btn-primary" id="addNewBtn"><span class="svg-icon" style="width:14px;height:14px"><svg viewBox="0 0 24 24"><use href="#icon-add"/></svg></span> דוח חדש</button>
         </div>
       </div>
       <div class="card" style="padding:0">
@@ -1013,6 +1122,83 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
   <span id="toastText">נשמר בהצלחה</span>
 </div>
 
+<!-- PDF Export Modal -->
+<div class="modal-overlay" id="pdfExportModal">
+  <div class="sync-modal" style="max-width:680px">
+    <h2>📄 הפקת דוח PDF מותאם אישית</h2>
+    <p class="sync-modal-subtitle" id="pdfModalSubtitle">בחר את התאריכים והנתונים שיופיעו בדוח</p>
+    
+    <!-- Section: Date Range -->
+    <div class="pdf-section">
+      <div class="pdf-section-title">
+        <span class="pdf-section-icon">📅</span>
+        <span>טווח תאריכים</span>
+      </div>
+      <div class="pdf-quick-dates">
+        <button type="button" class="pdf-quick-btn" data-range="7">7 ימים אחרונים</button>
+        <button type="button" class="pdf-quick-btn" data-range="30">30 ימים אחרונים</button>
+        <button type="button" class="pdf-quick-btn" data-range="90">90 ימים אחרונים</button>
+        <button type="button" class="pdf-quick-btn" data-range="year">השנה</button>
+        <button type="button" class="pdf-quick-btn active" data-range="all">כל הזמן</button>
+      </div>
+      <div class="form-grid cols-2" style="margin-top:12px">
+        <div class="form-group">
+          <label>מתאריך</label>
+          <input type="date" class="form-control" id="pdfStartDate">
+        </div>
+        <div class="form-group">
+          <label>עד תאריך</label>
+          <input type="date" class="form-control" id="pdfEndDate">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Section: KPIs -->
+    <div class="pdf-section">
+      <div class="pdf-section-title">
+        <span class="pdf-section-icon">📊</span>
+        <span>נתונים להציג בדוח</span>
+        <button type="button" class="pdf-section-action" id="pdfToggleAllKpis">בחר הכל</button>
+      </div>
+      <div class="pdf-checkbox-grid">
+        <label class="pdf-checkbox"><input type="checkbox" data-kpi="reach" checked><span class="pdf-cb-icon" style="background:#e0f5ee;color:#00b884"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-reach"/></svg></span><span class="pdf-cb-label">תפוצה</span></label>
+        <label class="pdf-checkbox"><input type="checkbox" data-kpi="impressions" checked><span class="pdf-cb-icon" style="background:#fff2dc;color:#ff9500">📊</span><span class="pdf-cb-label">חשיפות</span></label>
+        <label class="pdf-checkbox"><input type="checkbox" data-kpi="engagement" checked><span class="pdf-cb-icon" style="background:#fde8f0;color:#e1306c"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-engagement"/></svg></span><span class="pdf-cb-label">מעורבות</span></label>
+        <label class="pdf-checkbox"><input type="checkbox" data-kpi="leads" checked><span class="pdf-cb-icon" style="background:#e8f1fe;color:#1877f2"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-leads"/></svg></span><span class="pdf-cb-label">לידים</span></label>
+        <label class="pdf-checkbox"><input type="checkbox" data-kpi="clicks"><span class="pdf-cb-icon" style="background:#f0e8ff;color:#7c5cf2">👆</span><span class="pdf-cb-label">קליקים</span></label>
+        <label class="pdf-checkbox"><input type="checkbox" data-kpi="conversions"><span class="pdf-cb-icon" style="background:#e0f5ee;color:#00b884">✅</span><span class="pdf-cb-label">המרות</span></label>
+        <label class="pdf-checkbox"><input type="checkbox" data-kpi="budget" checked><span class="pdf-cb-icon" style="background:#fff2dc;color:#ff9500"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-budget"/></svg></span><span class="pdf-cb-label">תקציב</span></label>
+        <label class="pdf-checkbox"><input type="checkbox" data-kpi="cpl" checked><span class="pdf-cb-icon" style="background:#fde7eb;color:#e83b54">💵</span><span class="pdf-cb-label">עלות לליד</span></label>
+        <label class="pdf-checkbox"><input type="checkbox" data-kpi="ctr"><span class="pdf-cb-icon" style="background:#e8f1fe;color:#1877f2">📈</span><span class="pdf-cb-label">CTR</span></label>
+        <label class="pdf-checkbox"><input type="checkbox" data-kpi="cpc"><span class="pdf-cb-icon" style="background:#f0e8ff;color:#7c5cf2">💲</span><span class="pdf-cb-label">CPC</span></label>
+      </div>
+    </div>
+    
+    <!-- Section: Extra Content -->
+    <div class="pdf-section">
+      <div class="pdf-section-title">
+        <span class="pdf-section-icon">📋</span>
+        <span>רכיבים נוספים</span>
+      </div>
+      <div class="pdf-extras">
+        <label class="pdf-extra-item"><input type="checkbox" id="pdfShowTable" checked><div><strong>טבלת פירוט קמפיינים</strong><small>רשימה של כל הקמפיינים בתקופה</small></div></label>
+        <label class="pdf-extra-item"><input type="checkbox" id="pdfShowPlatformBreakdown" checked><div><strong>פילוח לפי פלטפורמה</strong><small>חלוקה בין Facebook ל-Instagram</small></div></label>
+        <label class="pdf-extra-item"><input type="checkbox" id="pdfShowSummary" checked><div><strong>סיכום ביצועים</strong><small>מספר הקמפיינים, תקופת הדוח</small></div></label>
+      </div>
+    </div>
+    
+    <!-- Preview Info -->
+    <div class="pdf-preview-info" id="pdfPreviewInfo">
+      <span>📋 הדוח יכלול: <strong id="pdfPreviewText">5 קמפיינים</strong></span>
+    </div>
+    
+    <div class="form-actions" style="border:none;padding-top:0;margin-top:14px">
+      <button class="btn btn-ghost" id="pdfCancelBtn">ביטול</button>
+      <button class="btn btn-primary" id="pdfGenerateBtn"><span class="svg-icon" style="width:14px;height:14px"><svg viewBox="0 0 24 24"><use href="#icon-pdf"/></svg></span> הפק דוח PDF</button>
+    </div>
+  </div>
+</div>
+
 <!-- Sync Modal -->
 <div class="modal-overlay" id="syncModal">
   <div class="sync-modal">
@@ -1090,6 +1276,194 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
   </div>
 </div>
 
+<!-- PDF Customization Modal -->
+<div class="modal-overlay" id="pdfCustomModal">
+  <div class="sync-modal" style="max-width:720px">
+    <h2>🎨 הכן דוח מותאם אישית</h2>
+    <p class="sync-modal-subtitle" id="pdfClientNameLabel">בחר טווח תאריכים והאלמנטים שיוצגו ללקוח</p>
+    
+    <!-- Date Range -->
+    <div class="pdf-config-section">
+      <div class="pdf-config-title">📅 טווח תאריכים</div>
+      <div class="pdf-preset-tabs">
+        <button class="pdf-preset" data-preset="7">7 ימים</button>
+        <button class="pdf-preset" data-preset="30">30 ימים</button>
+        <button class="pdf-preset" data-preset="90">3 חודשים</button>
+        <button class="pdf-preset" data-preset="month">החודש</button>
+        <button class="pdf-preset" data-preset="lastmonth">חודש קודם</button>
+        <button class="pdf-preset" data-preset="all">הכל</button>
+      </div>
+      <div class="form-grid cols-2" style="margin-top:10px">
+        <div class="form-group">
+          <label>מתאריך</label>
+          <input type="date" class="form-control" id="pdfStartDate">
+        </div>
+        <div class="form-group">
+          <label>עד תאריך</label>
+          <input type="date" class="form-control" id="pdfEndDate">
+        </div>
+      </div>
+      <div id="pdfDateCount" class="pdf-date-count"></div>
+    </div>
+
+    <!-- Primary KPIs -->
+    <div class="pdf-config-section">
+      <div class="pdf-config-title">
+        <span>📊 KPIs ראשיים</span>
+        <span class="pdf-select-actions">
+          <a href="#" class="pdf-action-link" data-action="select-all-primary">בחר הכל</a> |
+          <a href="#" class="pdf-action-link" data-action="clear-primary">נקה</a>
+        </span>
+      </div>
+      <div class="pdf-kpi-grid">
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="reach" checked>
+          <span class="pdf-kpi-icon" style="background:#e0f5ee;color:#00b884"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-reach"/></svg></span>
+          <span class="pdf-kpi-name">תפוצה</span>
+        </label>
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="engagement" checked>
+          <span class="pdf-kpi-icon" style="background:#fde8f0;color:#e1306c"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-engagement"/></svg></span>
+          <span class="pdf-kpi-name">מעורבות</span>
+        </label>
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="leads" checked>
+          <span class="pdf-kpi-icon" style="background:#e8f1fe;color:#1877f2"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-leads"/></svg></span>
+          <span class="pdf-kpi-name">לידים</span>
+        </label>
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="budget" checked>
+          <span class="pdf-kpi-icon" style="background:#fff2dc;color:#ff9500"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-budget"/></svg></span>
+          <span class="pdf-kpi-name">תקציב</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Secondary KPIs -->
+    <div class="pdf-config-section">
+      <div class="pdf-config-title">
+        <span>📈 KPIs מתקדמים</span>
+        <span class="pdf-select-actions">
+          <a href="#" class="pdf-action-link" data-action="select-all-secondary">בחר הכל</a> |
+          <a href="#" class="pdf-action-link" data-action="clear-secondary">נקה</a>
+        </span>
+      </div>
+      <div class="pdf-kpi-grid">
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="impressions">
+          <span class="pdf-kpi-icon" style="background:#f0e7ff;color:#7c5cf2"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-impressions"/></svg></span>
+          <span class="pdf-kpi-name">חשיפות</span>
+        </label>
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="clicks">
+          <span class="pdf-kpi-icon" style="background:#e0f0ff;color:#0099ff"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-clicks"/></svg></span>
+          <span class="pdf-kpi-name">קליקים</span>
+        </label>
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="ctr">
+          <span class="pdf-kpi-icon" style="background:#fff3e0;color:#ff7700"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-ctr"/></svg></span>
+          <span class="pdf-kpi-name">CTR</span>
+        </label>
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="cpc">
+          <span class="pdf-kpi-icon" style="background:#ffe0e8;color:#e83b54"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-budget"/></svg></span>
+          <span class="pdf-kpi-name">CPC</span>
+        </label>
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="cpl">
+          <span class="pdf-kpi-icon" style="background:#e0f5ee;color:#00b884"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-leads"/></svg></span>
+          <span class="pdf-kpi-name">CPL</span>
+        </label>
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="conversions">
+          <span class="pdf-kpi-icon" style="background:#e8f1fe;color:#1877f2"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-conversions"/></svg></span>
+          <span class="pdf-kpi-name">המרות</span>
+        </label>
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="video_views">
+          <span class="pdf-kpi-icon" style="background:#f3e5f5;color:#9c27b0"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-video"/></svg></span>
+          <span class="pdf-kpi-name">צפיות בוידאו</span>
+        </label>
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="video_completion">
+          <span class="pdf-kpi-icon" style="background:#ede7f6;color:#673ab7"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-video"/></svg></span>
+          <span class="pdf-kpi-name">% סיום וידאו</span>
+        </label>
+        <label class="pdf-kpi-option">
+          <input type="checkbox" class="pdf-kpi" data-kpi="video_avg_time">
+          <span class="pdf-kpi-icon" style="background:#ede7f6;color:#5e35b1"><svg width="13" height="13" viewBox="0 0 24 24"><use href="#icon-video"/></svg></span>
+          <span class="pdf-kpi-name">זמן צפייה ממוצע</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Additional Sections -->
+    <div class="pdf-config-section">
+      <div class="pdf-config-title">📦 רכיבים נוספים</div>
+      <div class="pdf-section-options">
+        <label class="pdf-section-option">
+          <input type="checkbox" class="pdf-section" data-section="platform-breakdown" checked>
+          <div>
+            <strong>פירוט לפי פלטפורמה</strong>
+            <small>חלוקת ביצועים בין Facebook ל-Instagram (כולל אחוזים ו-CPL)</small>
+          </div>
+        </label>
+        <label class="pdf-section-option">
+          <input type="checkbox" class="pdf-section" data-section="campaigns-table" checked>
+          <div>
+            <strong>טבלת קמפיינים</strong>
+            <small>פירוט מלא של כל הקמפיינים בתקופה</small>
+          </div>
+        </label>
+        <label class="pdf-section-option">
+          <input type="checkbox" class="pdf-section" data-section="notes">
+          <div>
+            <strong>הערות לדוח (אופציונלי)</strong>
+            <small>הוסף הערות אישיות שיופיעו בתחתית</small>
+          </div>
+        </label>
+      </div>
+      <textarea id="pdfNotes" class="form-control" rows="3" placeholder="הערות אופציונליות לדוח..." style="display:none;margin-top:10px;resize:vertical"></textarea>
+    </div>
+
+    <!-- Platform Filter for KPIs -->
+    <div class="pdf-config-section">
+      <div class="pdf-config-title">מקור הנתונים ב-KPIs הראשיים</div>
+      <div class="pdf-platform-filter">
+        <label class="pdf-platform-option">
+          <input type="radio" name="pdfPlatformSource" value="combined" checked>
+          <div>
+            <strong>📊 סה"כ (משולב)</strong>
+            <small>סך הכל מ-Facebook ו-Instagram יחד</small>
+          </div>
+        </label>
+        <label class="pdf-platform-option">
+          <input type="radio" name="pdfPlatformSource" value="facebook">
+          <div>
+            <strong>📘 רק Facebook</strong>
+            <small>נתונים רק מ-Facebook</small>
+          </div>
+        </label>
+        <label class="pdf-platform-option">
+          <input type="radio" name="pdfPlatformSource" value="instagram">
+          <div>
+            <strong>📸 רק Instagram</strong>
+            <small>נתונים רק מ-Instagram</small>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Preview Info -->
+    <div class="pdf-preview-info" id="pdfPreviewInfo"></div>
+
+    <div class="form-actions" style="border:none;padding-top:0">
+      <button class="btn btn-ghost" id="pdfCustomCancel">ביטול</button>
+      <button class="btn btn-primary" id="pdfCustomGenerate"><span class="svg-icon" style="width:14px;height:14px"><svg viewBox="0 0 24 24"><use href="#icon-pdf"/></svg></span> הפק דוח PDF</button>
+    </div>
+  </div>
+</div>
+
 <div id="pdfContainer" class="pdf-preview"></div>
 
 <script>
@@ -1134,6 +1508,29 @@ const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 const fmt = n => new Intl.NumberFormat('he-IL').format(Math.round(n||0));
 const fmtCurr = n => '₪' + fmt(n);
+
+// Icon helper - returns inline SVG string for PDF rendering (html2canvas safe)
+// Used in PDF generation since <use href> references don't always render in canvas
+const ICON_SVG = {
+  reach: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.866 3.134-7 7-7s7 3.134 7 7"/><path d="M3 7l1 1M21 7l-1 1M3 13l1.5-.5M21 13l-1.5-.5"/></svg>',
+  engagement: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><circle cx="8.5" cy="11.5" r="1" fill="currentColor"/><circle cx="12" cy="11.5" r="1" fill="currentColor"/><circle cx="15.5" cy="11.5" r="1" fill="currentColor"/></svg>',
+  leads: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><circle cx="12" cy="7" r="3"/><path d="M6 21v-1a6 6 0 0 1 12 0v1"/><path d="M3 7l2 2M3 11l2 2M21 7l-2 2M21 11l-2 2"/><circle cx="12" cy="13" r="0.5" fill="currentColor"/></svg>',
+  budget: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><circle cx="12" cy="12" r="9"/><path d="M9 8v8M9 8h3.5a2.5 2.5 0 0 1 0 5H9M15 8v8"/></svg>',
+  impressions: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+  clicks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M9 9l3 8 2-4 4-2-9-2z"/><path d="M3 3l3 1M3 8l3-1M8 3l1 3"/></svg>',
+  ctr: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg>',
+  conversions: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>',
+  refresh: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M21 12a9 9 0 0 1-9 9c-2.4 0-4.6-.9-6.3-2.4L4 16M3 12a9 9 0 0 1 9-9c2.4 0 4.6.9 6.3 2.4L20 8"/><path d="M3 16h4v4M21 8h-4V4"/></svg>',
+  add: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
+  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>',
+  pdf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>',
+  chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 12a9 9 0 0 0-9-9v9z"/><circle cx="12" cy="12" r="3"/></svg>',
+  video: '<svg viewBox="0 0 430 430" fill="currentColor" style="width:100%;height:100%"><path fill-rule="evenodd" clip-rule="evenodd" d="M109.267 53.812a6 6 0 0 1 6.156.291l124.399 82.7h.001l109.399 72.7a6 6 0 0 1-.001 9.995l-233.8 155.3a6 6 0 0 1-9.319-4.998V59.1a6 6 0 0 1 3.165-5.288m8.835 16.482v288.318l216.957-144.113-101.878-67.702h-.001z"/></svg>',
+  followers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><circle cx="9" cy="8" r="3.5"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 8h6M19 5v6"/></svg>',
+  page: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'
+};
+const iconHtml = (name) => ICON_SVG[name] || '';
 const pct = (a,b) => b ? Math.round(((a-b)/b)*100) : 0;
 const initials = name => (name||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase() || '?';
 
@@ -1172,6 +1569,7 @@ async function loadData(){
       type: c.campaign_type,
       startDate: c.start_date,
       endDate: c.end_date,
+      // Aggregate totals
       reach: c.reach,
       impressions: c.impressions,
       clicks: c.clicks,
@@ -1182,6 +1580,34 @@ async function loadData(){
       leads: c.leads,
       conversions: c.conversions,
       budget: c.budget,
+      // Video metrics
+      videoViews: c.video_views || 0,
+      videoP25: c.video_p25 || 0,
+      videoP50: c.video_p50 || 0,
+      videoP75: c.video_p75 || 0,
+      videoP100: c.video_p100 || 0,
+      video30sec: c.video_30sec || 0,
+      videoAvgTime: c.video_avg_time || 0,
+      // Facebook breakdown
+      fbReach: c.fb_reach || 0,
+      fbImpressions: c.fb_impressions || 0,
+      fbClicks: c.fb_clicks || 0,
+      fbEngagement: c.fb_engagement || 0,
+      fbLeads: c.fb_leads || 0,
+      fbConversions: c.fb_conversions || 0,
+      fbBudget: c.fb_budget || 0,
+      fbVideoViews: c.fb_video_views || 0,
+      fbVideoP100: c.fb_video_p100 || 0,
+      // Instagram breakdown
+      igReach: c.ig_reach || 0,
+      igImpressions: c.ig_impressions || 0,
+      igClicks: c.ig_clicks || 0,
+      igEngagement: c.ig_engagement || 0,
+      igLeads: c.ig_leads || 0,
+      igConversions: c.ig_conversions || 0,
+      igBudget: c.ig_budget || 0,
+      igVideoViews: c.ig_video_views || 0,
+      igVideoP100: c.ig_video_p100 || 0,
       notes: c.notes,
       createdAt: c.created_at,
       syncedAt: c.synced_at
@@ -1228,6 +1654,16 @@ $$('#platformTabs .tab').forEach(tab=>{
     $$('#platformTabs .tab').forEach(t=>t.classList.remove('active'));
     tab.classList.add('active');
     currentPlatformFilter = tab.dataset.platform;
+    renderDashboard();
+  });
+});
+
+// ============ DATE RANGE FILTER ============
+$$('#dateFilterTabs .date-filter-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    $$('#dateFilterTabs .date-filter-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    currentDateFilter = tab.dataset.range;
     renderDashboard();
   });
 });
@@ -1383,7 +1819,7 @@ function renderClients(){
           <div class="empty-icon">👥</div>
           <h3>אין לקוחות במערכת</h3>
           <p>הוסף את הלקוח הראשון כדי להתחיל</p>
-          <button class="btn btn-primary" onclick="document.getElementById('addClientBtn').click()"><span>➕</span> הוסף לקוח חדש</button>
+          <button class="btn btn-primary" onclick="document.getElementById('addClientBtn').click()"><span class="svg-icon" style="width:14px;height:14px"><svg viewBox="0 0 24 24"><use href="#icon-add"/></svg></span> הוסף לקוח חדש</button>
         </div>
       </div>`;
     return;
@@ -1398,9 +1834,9 @@ function renderClients(){
     return `
       <div class="client-card" data-client-id="${c.id}">
         <div class="client-card-actions">
-          <button class="icon-btn" onclick="event.stopPropagation();exportClientPDF('${c.id}')" title="ייצוא PDF">📄</button>
-          <button class="icon-btn" onclick="event.stopPropagation();editClient('${c.id}')" title="עריכה">✏️</button>
-          <button class="icon-btn delete" onclick="event.stopPropagation();askDeleteClient('${c.id}')" title="מחיקה">🗑️</button>
+          <button class="icon-btn" onclick="event.stopPropagation();exportClientPDF('${c.id}')" title="ייצוא PDF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-pdf"/></svg></button>
+          <button class="icon-btn" onclick="event.stopPropagation();editClient('${c.id}')" title="עריכה"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-edit"/></svg></button>
+          <button class="icon-btn delete" onclick="event.stopPropagation();askDeleteClient('${c.id}')" title="מחיקה"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-trash"/></svg></button>
         </div>
         <div class="client-avatar">${avatar}</div>
         <div class="client-name">${c.name}</div>
@@ -1460,26 +1896,163 @@ function openClientProfile(clientId){
     
     <div class="kpi-grid">
       <div class="kpi-card">
-        <div class="kpi-top"><div class="kpi-icon reach">👁️</div></div>
+        <div class="kpi-top"><div class="kpi-icon reach"><svg viewBox="0 0 24 24"><use href="#icon-reach"/></svg></div></div>
         <div class="kpi-label">תפוצה כוללת</div>
         <div class="kpi-value">${fmt(totals.reach)}</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-top"><div class="kpi-icon engagement">💬</div></div>
+        <div class="kpi-top"><div class="kpi-icon engagement"><svg viewBox="0 0 24 24"><use href="#icon-engagement"/></svg></div></div>
         <div class="kpi-label">מעורבות כוללת</div>
         <div class="kpi-value">${fmt(totals.engagement)}</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-top"><div class="kpi-icon leads">🎯</div></div>
+        <div class="kpi-top"><div class="kpi-icon leads"><svg viewBox="0 0 24 24"><use href="#icon-leads"/></svg></div></div>
         <div class="kpi-label">לידים כוללים</div>
         <div class="kpi-value">${fmt(totals.leads)}</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-top"><div class="kpi-icon budget">💰</div></div>
+        <div class="kpi-top"><div class="kpi-icon budget"><svg viewBox="0 0 24 24"><use href="#icon-budget"/></svg></div></div>
         <div class="kpi-label">תקציב | עלות לליד: ₪${cpl}</div>
         <div class="kpi-value">${fmtCurr(totals.budget)}</div>
       </div>
     </div>`;
+  
+  // Platform breakdown card - only show if there's actual data
+  if(reports.length > 0){
+    const fbBd = reports.reduce((a,r)=>({reach:a.reach+(r.fbReach||0),leads:a.leads+(r.fbLeads||0),budget:a.budget+(r.fbBudget||0),engagement:a.engagement+(r.fbEngagement||0),videoViews:a.videoViews+(r.fbVideoViews||0)}),{reach:0,leads:0,budget:0,engagement:0,videoViews:0});
+    const igBd = reports.reduce((a,r)=>({reach:a.reach+(r.igReach||0),leads:a.leads+(r.igLeads||0),budget:a.budget+(r.igBudget||0),engagement:a.engagement+(r.igEngagement||0),videoViews:a.videoViews+(r.igVideoViews||0)}),{reach:0,leads:0,budget:0,engagement:0,videoViews:0});
+    
+    if(fbBd.reach > 0 || igBd.reach > 0){
+      const totalReach = fbBd.reach + igBd.reach;
+      const fbPct = totalReach ? Math.round((fbBd.reach/totalReach)*100) : 0;
+      const igPct = totalReach ? 100 - fbPct : 0;
+      const fbCpl = fbBd.leads ? (fbBd.budget/fbBd.leads).toFixed(0) : '-';
+      const igCpl = igBd.leads ? (igBd.budget/igBd.leads).toFixed(0) : '-';
+      const hasVideoFb = fbBd.videoViews > 0;
+      const hasVideoIg = igBd.videoViews > 0;
+      const showVideo = hasVideoFb || hasVideoIg;
+      
+      // Build FB metrics grid - 4 cells, or 6 if video data exists
+      const fbMetrics = `
+        <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px"><div style="color:var(--text-muted);margin-bottom:3px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('reach')}</span>תפוצה</div><strong style="font-size:14px;color:var(--text-primary)">${fmt(fbBd.reach)}</strong></div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px"><div style="color:var(--text-muted);margin-bottom:3px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('leads')}</span>לידים</div><strong style="font-size:14px;color:var(--text-primary)">${fmt(fbBd.leads)}</strong></div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px"><div style="color:var(--text-muted);margin-bottom:3px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('budget')}</span>תקציב</div><strong style="font-size:14px;color:var(--text-primary)">${fmtCurr(fbBd.budget)}</strong></div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px"><div style="color:var(--text-muted);margin-bottom:3px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('leads')}</span>CPL</div><strong style="font-size:14px;color:var(--green)">${fbCpl==='-'?'-':'₪'+fbCpl}</strong></div>
+        ${showVideo ? `<div style="background:#fff;border:1px solid #e1bee7;border-radius:6px;padding:8px;grid-column:span 2"><div style="color:#7b1fa2;margin-bottom:3px;font-weight:600"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('video')}</span>צפיות וידאו</div><strong style="font-size:14px;color:var(--text-primary)">${fmt(fbBd.videoViews)}</strong></div>` : ''}
+      `;
+      
+      const igMetrics = `
+        <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px"><div style="color:var(--text-muted);margin-bottom:3px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('reach')}</span>תפוצה</div><strong style="font-size:14px;color:var(--text-primary)">${fmt(igBd.reach)}</strong></div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px"><div style="color:var(--text-muted);margin-bottom:3px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('leads')}</span>לידים</div><strong style="font-size:14px;color:var(--text-primary)">${fmt(igBd.leads)}</strong></div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px"><div style="color:var(--text-muted);margin-bottom:3px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('budget')}</span>תקציב</div><strong style="font-size:14px;color:var(--text-primary)">${fmtCurr(igBd.budget)}</strong></div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px"><div style="color:var(--text-muted);margin-bottom:3px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('leads')}</span>CPL</div><strong style="font-size:14px;color:var(--green)">${igCpl==='-'?'-':'₪'+igCpl}</strong></div>
+        ${showVideo ? `<div style="background:#fff;border:1px solid #e1bee7;border-radius:6px;padding:8px;grid-column:span 2"><div style="color:#7b1fa2;margin-bottom:3px;font-weight:600"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('video')}</span>צפיות וידאו</div><strong style="font-size:14px;color:var(--text-primary)">${fmt(igBd.videoViews)}</strong></div>` : ''}
+      `;
+      
+      content += `
+        <div class="card" style="margin-bottom:18px">
+          <div class="card-header"><div class="card-title">📊 פיצול ביצועים לפי פלטפורמה</div></div>
+          <div style="padding:18px 22px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div style="background:linear-gradient(135deg,#fafbfc,#fff);border:1px solid var(--border);border-right:5px solid #1877f2;border-radius:12px;padding:16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="background:#1877f2;color:#fff;padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700">📘 Facebook</div>
+                </div>
+                <div style="font-size:24px;font-weight:800;color:#1877f2">${fbPct}%</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px">
+                ${fbMetrics}
+              </div>
+            </div>
+            <div style="background:linear-gradient(135deg,#fafbfc,#fff);border:1px solid var(--border);border-right:5px solid #e1306c;border-radius:12px;padding:16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="background:linear-gradient(135deg,#e1306c,#c92965);color:#fff;padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700">📸 Instagram</div>
+                </div>
+                <div style="font-size:24px;font-weight:800;color:#e1306c">${igPct}%</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px">
+                ${igMetrics}
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+  }
+  
+  // Video metrics card - only show if there's any video data
+  if(reports.length > 0){
+    const videoTotal = reports.reduce((acc,r)=>({
+      views: acc.views + (r.videoViews || 0),
+      p25: acc.p25 + (r.videoP25 || 0),
+      p50: acc.p50 + (r.videoP50 || 0),
+      p75: acc.p75 + (r.videoP75 || 0),
+      p100: acc.p100 + (r.videoP100 || 0),
+      sec30: acc.sec30 + (r.video30sec || 0)
+    }), {views:0,p25:0,p50:0,p75:0,p100:0,sec30:0});
+    
+    if(videoTotal.views > 0){
+      const avgTimes = reports.filter(r => (r.videoAvgTime||0) > 0).map(r => r.videoAvgTime);
+      const avgWatchSec = avgTimes.length ? Math.round(avgTimes.reduce((a,b)=>a+b,0) / avgTimes.length) : 0;
+      const completionRate = videoTotal.views ? ((videoTotal.p100 / videoTotal.views) * 100).toFixed(1) : 0;
+      const p50Rate = videoTotal.views ? ((videoTotal.p50 / videoTotal.views) * 100).toFixed(0) : 0;
+      const p75Rate = videoTotal.views ? ((videoTotal.p75 / videoTotal.views) * 100).toFixed(0) : 0;
+      
+      content += `
+        <div class="card" style="margin-bottom:18px">
+          <div class="card-header">
+            <div class="card-title" style="display:flex;align-items:center;gap:8px">
+              <span class="svg-icon" style="width:18px;height:18px;color:#9c27b0"><svg viewBox="0 0 24 24"><use href="#icon-video"/></svg></span>
+              ביצועי וידאו
+            </div>
+          </div>
+          <div style="padding:18px 22px">
+            <!-- Top KPIs Row -->
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+              <div style="background:linear-gradient(135deg,#f3e5f5,#fff);border:1px solid #e1bee7;border-radius:10px;padding:14px">
+                <div style="font-size:11px;color:#7b1fa2;font-weight:600;margin-bottom:4px">צפיות (התחילו)</div>
+                <div style="font-size:22px;color:#1a1f2e;font-weight:800;letter-spacing:-0.5px">${fmt(videoTotal.views)}</div>
+              </div>
+              <div style="background:linear-gradient(135deg,#ede7f6,#fff);border:1px solid #d1c4e9;border-radius:10px;padding:14px">
+                <div style="font-size:11px;color:#5e35b1;font-weight:600;margin-bottom:4px">צפו 30+ שניות</div>
+                <div style="font-size:22px;color:#1a1f2e;font-weight:800;letter-spacing:-0.5px">${fmt(videoTotal.sec30)}</div>
+              </div>
+              <div style="background:linear-gradient(135deg,#e8eaf6,#fff);border:1px solid #c5cae9;border-radius:10px;padding:14px">
+                <div style="font-size:11px;color:#3949ab;font-weight:600;margin-bottom:4px">סיימו (100%)</div>
+                <div style="font-size:22px;color:#1a1f2e;font-weight:800;letter-spacing:-0.5px">${fmt(videoTotal.p100)} <span style="font-size:13px;color:var(--text-secondary);font-weight:500">(${completionRate}%)</span></div>
+              </div>
+              <div style="background:linear-gradient(135deg,#e1f5fe,#fff);border:1px solid #b3e5fc;border-radius:10px;padding:14px">
+                <div style="font-size:11px;color:#0277bd;font-weight:600;margin-bottom:4px">זמן צפייה ממוצע</div>
+                <div style="font-size:22px;color:#1a1f2e;font-weight:800;letter-spacing:-0.5px">${avgWatchSec}<span style="font-size:13px;color:var(--text-secondary);font-weight:500"> שניות</span></div>
+              </div>
+            </div>
+            
+            <!-- Completion Funnel -->
+            <div style="background:#fafbfc;border:1px solid var(--border);border-radius:10px;padding:14px">
+              <div style="font-size:12px;color:var(--text-secondary);font-weight:600;margin-bottom:12px">משפך השלמת צפייה</div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px"><span>25%</span><strong style="color:var(--text-primary)">${fmt(videoTotal.p25)}</strong></div>
+                  <div style="height:6px;background:#e8eaf6;border-radius:3px;overflow:hidden"><div style="height:100%;width:${videoTotal.views ? Math.round((videoTotal.p25/videoTotal.views)*100) : 0}%;background:linear-gradient(90deg,#7986cb,#5c6bc0)"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px"><span>50%</span><strong style="color:var(--text-primary)">${fmt(videoTotal.p50)}</strong></div>
+                  <div style="height:6px;background:#e8eaf6;border-radius:3px;overflow:hidden"><div style="height:100%;width:${p50Rate}%;background:linear-gradient(90deg,#5c6bc0,#3f51b5)"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px"><span>75%</span><strong style="color:var(--text-primary)">${fmt(videoTotal.p75)}</strong></div>
+                  <div style="height:6px;background:#e8eaf6;border-radius:3px;overflow:hidden"><div style="height:100%;width:${p75Rate}%;background:linear-gradient(90deg,#3f51b5,#3949ab)"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px"><span>100%</span><strong style="color:var(--text-primary)">${fmt(videoTotal.p100)}</strong></div>
+                  <div style="height:6px;background:#e8eaf6;border-radius:3px;overflow:hidden"><div style="height:100%;width:${completionRate}%;background:linear-gradient(90deg,#3949ab,#283593)"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+  }
   
   if(reports.length > 0){
     content += `
@@ -1540,8 +2113,8 @@ function openClientProfile(clientId){
                 <td><strong>${fmtCurr(r.budget)}</strong></td>
                 <td>
                   <div class="table-actions">
-                    <button class="icon-btn" onclick="editCampaign('${r.id}')" title="עריכה">✏️</button>
-                    <button class="icon-btn delete" onclick="askDeleteCampaign('${r.id}')" title="מחיקה">🗑️</button>
+                    <button class="icon-btn" onclick="editCampaign('${r.id}')" title="עריכה"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-edit"/></svg></button>
+                    <button class="icon-btn delete" onclick="askDeleteCampaign('${r.id}')" title="מחיקה"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-trash"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -1700,6 +2273,8 @@ $('#campaignForm').addEventListener('submit', async (e)=>{
 });
 
 // ============ DASHBOARD ============
+let currentDateFilter = 'all'; // 'all', '7', '14', '30', '90'
+
 function getFiltered(){
   let result = campaigns;
   if(currentPlatformFilter!=='all'){
@@ -1708,7 +2283,31 @@ function getFiltered(){
   if(currentDashboardClientFilter!=='all'){
     result = result.filter(c=>c.clientId===currentDashboardClientFilter);
   }
+  // Date filter - by campaign START date
+  if(currentDateFilter !== 'all'){
+    const days = parseInt(currentDateFilter);
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+    cutoff.setHours(0,0,0,0);
+    const cutoffStr = cutoff.toISOString().split('T')[0];
+    result = result.filter(c => c.startDate >= cutoffStr);
+  }
   return result;
+}
+
+function updateDateFilterInfo(){
+  const info = $('#dateFilterInfo');
+  if(!info) return;
+  const filtered = getFiltered();
+  if(currentDateFilter === 'all'){
+    info.innerHTML = `<strong>${filtered.length}</strong> קמפיינים סה"כ`;
+  } else {
+    const days = parseInt(currentDateFilter);
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+    const dateStr = cutoff.toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit',year:'numeric'});
+    info.innerHTML = `<strong>${filtered.length}</strong> קמפיינים מ-${dateStr} עד היום`;
+  }
 }
 
 function renderClientContextBanner(){
@@ -1719,14 +2318,31 @@ function renderClientContextBanner(){
   }
   const c = getClient(currentDashboardClientFilter);
   if(!c){banner.innerHTML = '';return}
-  const reports = clientReports(c.id);
+  const allReports = clientReports(c.id);
+  
+  // Apply date filter to count
+  let filteredCount = allReports.length;
+  if(currentDateFilter !== 'all'){
+    const days = parseInt(currentDateFilter);
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+    const cutoffStr = cutoff.toISOString().split('T')[0];
+    filteredCount = allReports.filter(r => r.startDate >= cutoffStr).length;
+  }
+  
   const avatar = c.logo ? `<img src="${c.logo}" alt="${c.name}">` : initials(c.name);
+  const periodText = currentDateFilter === 'all' ? '' : 
+                     currentDateFilter === '7' ? ' ב-7 הימים האחרונים' :
+                     currentDateFilter === '14' ? ' ב-14 הימים האחרונים' :
+                     currentDateFilter === '30' ? ' ב-30 הימים האחרונים' :
+                     currentDateFilter === '90' ? ' ב-3 חודשים האחרונים' : '';
+  
   banner.innerHTML = `
     <div class="client-context-banner">
       <div class="client-context-avatar">${avatar}</div>
       <div class="client-context-info">
         <h3>${c.name}</h3>
-        <p>מציג נתונים של ${reports.length} ${reports.length===1?'דוח':'דוחות'} ללקוח זה</p>
+        <p>מציג נתונים של ${filteredCount} ${filteredCount===1?'דוח':'דוחות'} ללקוח זה${periodText}</p>
       </div>
       <div style="display:flex;gap:8px">
         <div class="client-context-action" onclick="exportClientPDF('${c.id}')" style="background:var(--accent);color:var(--accent-dark)">📄 ייצוא PDF</div>
@@ -1747,6 +2363,7 @@ function populateDashboardClientFilter(){
 function renderDashboard(){
   populateDashboardClientFilter();
   renderClientContextBanner();
+  updateDateFilterInfo();
   
   // Show/hide "active clients" KPI based on filter
   const clientsKpi = document.querySelector('.kpi-card .kpi-icon.clients');
@@ -1759,8 +2376,10 @@ function renderDashboard(){
     reach:acc.reach+c.reach,
     engagement:acc.engagement+(c.engagement||0),
     leads:acc.leads+c.leads,
-    budget:acc.budget+c.budget
-  }),{reach:0,engagement:0,leads:0,budget:0});
+    budget:acc.budget+c.budget,
+    videoViews:acc.videoViews+(c.videoViews||0),
+    videoP100:acc.videoP100+(c.videoP100||0)
+  }),{reach:0,engagement:0,leads:0,budget:0,videoViews:0,videoP100:0});
   
   const activeClientIds = new Set(filtered.map(c=>c.clientId));
   $('#kpi-clients').textContent = activeClientIds.size;
@@ -1768,6 +2387,19 @@ function renderDashboard(){
   $('#kpi-reach').textContent = fmt(totals.reach);
   $('#kpi-leads').textContent = fmt(totals.leads);
   $('#kpi-budget').textContent = fmtCurr(totals.budget);
+  
+  // Video KPI - show only if there's video data
+  const videoCard = $('#kpi-card-video');
+  if(videoCard){
+    if(totals.videoViews > 0){
+      videoCard.style.display = '';
+      $('#kpi-video-views').textContent = fmt(totals.videoViews);
+      const completionRate = totals.videoViews > 0 ? Math.round((totals.videoP100/totals.videoViews)*100) : 0;
+      $('#kpi-video-completion-val').textContent = completionRate + '%';
+    } else {
+      videoCard.style.display = 'none';
+    }
+  }
   
   const sorted = [...filtered].sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
   const half = Math.floor(sorted.length/2);
@@ -1819,13 +2451,22 @@ function drawTrendChart(data){
 }
 
 function drawPlatformChart(data){
-  // Use the filtered campaigns based on client filter (platform filter is irrelevant for this chart)
+  // Use the filtered campaigns based on client filter AND date filter
   let source = campaigns;
   if(currentDashboardClientFilter !== 'all'){
     source = source.filter(c=>c.clientId===currentDashboardClientFilter);
   }
-  const fb = source.filter(c=>c.platform==='facebook').reduce((s,c)=>s+c.reach,0);
-  const ig = source.filter(c=>c.platform==='instagram').reduce((s,c)=>s+c.reach,0);
+  // Apply date filter
+  if(currentDateFilter !== 'all'){
+    const days = parseInt(currentDateFilter);
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+    const cutoffStr = cutoff.toISOString().split('T')[0];
+    source = source.filter(c => c.startDate >= cutoffStr);
+  }
+  // Sum the actual platform breakdown (fbReach + igReach), with fallback to old data
+  const fb = source.reduce((s,c)=> s + (c.fbReach || (c.platform==='facebook' ? c.reach : 0)), 0);
+  const ig = source.reduce((s,c)=> s + (c.igReach || (c.platform==='instagram' ? c.reach : 0)), 0);
   const ctx = document.getElementById('platformChart').getContext('2d');
   if(charts.platform) charts.platform.destroy();
   charts.platform = new Chart(ctx,{
@@ -1882,8 +2523,8 @@ function renderTable(){
         <td><strong>${fmtCurr(c.budget)}</strong></td>
         <td>
           <div class="table-actions">
-            <button class="icon-btn" onclick="editCampaign('${c.id}')" title="עריכה">✏️</button>
-            <button class="icon-btn delete" onclick="askDeleteCampaign('${c.id}')" title="מחיקה">🗑️</button>
+            <button class="icon-btn" onclick="editCampaign('${c.id}')" title="עריכה"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-edit"/></svg></button>
+            <button class="icon-btn delete" onclick="askDeleteCampaign('${c.id}')" title="מחיקה"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-trash"/></svg></button>
           </div>
         </td>
       </tr>`;
@@ -2062,170 +2703,550 @@ async function exportPDF(){
   }catch(e){console.error(e);toast('שגיאה בייצוא PDF')}
 }
 
-// ============ CLIENT-SPECIFIC PDF EXPORT ============
-async function exportClientPDF(clientId){
+// ============ CLIENT-SPECIFIC PDF EXPORT (with customization) ============
+let pdfCustomState = {
+  clientId: null,
+  startDate: null,
+  endDate: null
+};
+
+// Trigger - opens the customization modal
+function exportClientPDF(clientId){
   const c = getClient(clientId);
   if(!c){toast('לקוח לא נמצא');return}
-  const reports = clientReports(clientId).sort((a,b)=>new Date(b.startDate)-new Date(a.startDate));
+  const reports = clientReports(clientId);
   if(reports.length===0){toast('אין דוחות ללקוח זה');return}
   
+  pdfCustomState.clientId = clientId;
+  $('#pdfClientNameLabel').textContent = `הכן דוח מותאם אישית עבור ${c.name}`;
+  
+  // Default to last 30 days, or "all" if no recent data
+  applyDatePreset('30');
+  
+  // Reset all checkboxes to defaults
+  document.querySelectorAll('#pdfCustomModal .pdf-kpi').forEach(cb=>{
+    const defaults = ['reach','engagement','leads','budget'];
+    cb.checked = defaults.includes(cb.dataset.kpi);
+  });
+  document.querySelectorAll('#pdfCustomModal .pdf-section').forEach(cb=>{
+    cb.checked = ['platform-breakdown','campaigns-table'].includes(cb.dataset.section);
+  });
+  $('#pdfNotes').value = '';
+  $('#pdfNotes').style.display = 'none';
+  
+  updatePdfPreviewInfo();
+  $('#pdfCustomModal').classList.add('active');
+}
+
+function applyDatePreset(preset){
+  const today = new Date();
+  let start, end = new Date();
+  
+  if(preset==='all'){
+    // Use earliest report date
+    const allReports = clientReports(pdfCustomState.clientId);
+    if(allReports.length>0){
+      const dates = allReports.map(r=>new Date(r.startDate));
+      start = new Date(Math.min(...dates));
+    } else {
+      start = new Date(today.getFullYear(), today.getMonth()-1, today.getDate());
+    }
+  } else if(preset==='month'){
+    start = new Date(today.getFullYear(), today.getMonth(), 1);
+  } else if(preset==='lastmonth'){
+    start = new Date(today.getFullYear(), today.getMonth()-1, 1);
+    end = new Date(today.getFullYear(), today.getMonth(), 0);
+  } else {
+    const days = parseInt(preset);
+    start = new Date();
+    start.setDate(today.getDate() - days);
+  }
+  
+  $('#pdfStartDate').value = start.toISOString().split('T')[0];
+  $('#pdfEndDate').value = end.toISOString().split('T')[0];
+  
+  // Mark active preset
+  document.querySelectorAll('.pdf-preset').forEach(b=>b.classList.remove('active'));
+  const btn = document.querySelector(`.pdf-preset[data-preset="${preset}"]`);
+  if(btn) btn.classList.add('active');
+  
+  updatePdfPreviewInfo();
+}
+
+function getFilteredReportsForPdf(){
+  if(!pdfCustomState.clientId) return [];
+  const start = $('#pdfStartDate').value;
+  const end = $('#pdfEndDate').value;
+  if(!start || !end) return [];
+  
+  return clientReports(pdfCustomState.clientId).filter(r=>{
+    return r.startDate >= start && r.startDate <= end;
+  }).sort((a,b)=>new Date(b.startDate)-new Date(a.startDate));
+}
+
+function updatePdfPreviewInfo(){
+  const reports = getFilteredReportsForPdf();
+  const info = $('#pdfPreviewInfo');
+  const countEl = $('#pdfDateCount');
+  
+  if(reports.length===0){
+    info.style.display = 'none';
+    countEl.className = 'pdf-date-count no-data';
+    countEl.textContent = '⚠️ אין קמפיינים בטווח התאריכים שנבחר';
+    return;
+  }
+  
+  const totalReach = reports.reduce((s,r)=>s+r.reach,0);
+  const totalLeads = reports.reduce((s,r)=>s+r.leads,0);
+  const totalBudget = reports.reduce((s,r)=>s+r.budget,0);
+  
+  countEl.className = 'pdf-date-count has-data';
+  countEl.innerHTML = `✓ נמצאו <strong>${reports.length}</strong> קמפיינים בטווח`;
+  
+  info.style.display = 'block';
+  info.innerHTML = `<strong>📊 תצוגה מקדימה של הנתונים:</strong> ${reports.length} קמפיינים | ${fmt(totalReach)} תפוצה | ${fmt(totalLeads)} לידים | ${fmtCurr(totalBudget)} תקציב`;
+}
+
+// Event handlers for the modal
+$$('#pdfCustomModal .pdf-preset').forEach(btn=>{
+  btn.addEventListener('click', ()=>applyDatePreset(btn.dataset.preset));
+});
+
+$('#pdfStartDate').addEventListener('change', ()=>{
+  document.querySelectorAll('.pdf-preset').forEach(b=>b.classList.remove('active'));
+  updatePdfPreviewInfo();
+});
+$('#pdfEndDate').addEventListener('change', ()=>{
+  document.querySelectorAll('.pdf-preset').forEach(b=>b.classList.remove('active'));
+  updatePdfPreviewInfo();
+});
+
+// Select all / clear actions
+$$('#pdfCustomModal .pdf-action-link').forEach(link=>{
+  link.addEventListener('click', (e)=>{
+    e.preventDefault();
+    const action = link.dataset.action;
+    const primaryKpis = ['reach','engagement','leads','budget'];
+    const secondaryKpis = ['impressions','clicks','ctr','cpc','cpl','conversions'];
+    
+    document.querySelectorAll('#pdfCustomModal .pdf-kpi').forEach(cb=>{
+      const isPrimary = primaryKpis.includes(cb.dataset.kpi);
+      const isSecondary = secondaryKpis.includes(cb.dataset.kpi);
+      
+      if(action==='select-all-primary' && isPrimary) cb.checked = true;
+      if(action==='clear-primary' && isPrimary) cb.checked = false;
+      if(action==='select-all-secondary' && isSecondary) cb.checked = true;
+      if(action==='clear-secondary' && isSecondary) cb.checked = false;
+    });
+  });
+});
+
+// Show/hide notes textarea
+document.querySelector('.pdf-section[data-section="notes"]').addEventListener('change', (e)=>{
+  $('#pdfNotes').style.display = e.target.checked ? 'block' : 'none';
+});
+
+// Cancel
+$('#pdfCustomCancel').addEventListener('click', ()=>{
+  $('#pdfCustomModal').classList.remove('active');
+});
+
+// Generate the actual PDF
+$('#pdfCustomGenerate').addEventListener('click', generateCustomPDF);
+
+async function generateCustomPDF(){
+  const c = getClient(pdfCustomState.clientId);
+  if(!c){toast('לקוח לא נמצא');return}
+  
+  const reports = getFilteredReportsForPdf();
+  if(reports.length===0){
+    toast('אין קמפיינים בטווח התאריכים שנבחר');
+    return;
+  }
+  
+  // Get selected KPIs
+  const selectedKpis = Array.from(document.querySelectorAll('#pdfCustomModal .pdf-kpi:checked'))
+                            .map(cb=>cb.dataset.kpi);
+  if(selectedKpis.length===0){
+    toast('יש לבחור לפחות KPI אחד');
+    return;
+  }
+  
+  const selectedSections = Array.from(document.querySelectorAll('#pdfCustomModal .pdf-section:checked'))
+                                .map(cb=>cb.dataset.section);
+  const notesText = $('#pdfNotes').value.trim();
+  
+  // Get platform source filter (combined/facebook/instagram)
+  const platformSource = document.querySelector('input[name="pdfPlatformSource"]:checked')?.value || 'combined';
+  
+  // Close modal and start generation
+  $('#pdfCustomModal').classList.remove('active');
   toast('מכין דוח PDF...');
   
-  const totals = reports.reduce((acc,r)=>({
-    reach:acc.reach+r.reach,
-    impressions:acc.impressions+(r.impressions||0),
-    clicks:acc.clicks+(r.clicks||0),
-    engagement:acc.engagement+(r.engagement||0),
-    leads:acc.leads+r.leads,
-    conversions:acc.conversions+(r.conversions||0),
-    budget:acc.budget+r.budget
-  }),{reach:0,impressions:0,clicks:0,engagement:0,leads:0,conversions:0,budget:0});
+  // Calculate totals based on platform source selection
+  let totals;
+  if(platformSource === 'facebook'){
+    totals = reports.reduce((acc,r)=>({
+      reach:acc.reach+(r.fbReach||0),
+      impressions:acc.impressions+(r.fbImpressions||0),
+      clicks:acc.clicks+(r.fbClicks||0),
+      engagement:acc.engagement+(r.fbEngagement||0),
+      leads:acc.leads+(r.fbLeads||0),
+      conversions:acc.conversions+(r.fbConversions||0),
+      budget:acc.budget+(r.fbBudget||0)
+    }),{reach:0,impressions:0,clicks:0,engagement:0,leads:0,conversions:0,budget:0});
+  } else if(platformSource === 'instagram'){
+    totals = reports.reduce((acc,r)=>({
+      reach:acc.reach+(r.igReach||0),
+      impressions:acc.impressions+(r.igImpressions||0),
+      clicks:acc.clicks+(r.igClicks||0),
+      engagement:acc.engagement+(r.igEngagement||0),
+      leads:acc.leads+(r.igLeads||0),
+      conversions:acc.conversions+(r.igConversions||0),
+      budget:acc.budget+(r.igBudget||0)
+    }),{reach:0,impressions:0,clicks:0,engagement:0,leads:0,conversions:0,budget:0});
+  } else {
+    // combined (default)
+    totals = reports.reduce((acc,r)=>({
+      reach:acc.reach+r.reach,
+      impressions:acc.impressions+(r.impressions||0),
+      clicks:acc.clicks+(r.clicks||0),
+      engagement:acc.engagement+(r.engagement||0),
+      leads:acc.leads+r.leads,
+      conversions:acc.conversions+(r.conversions||0),
+      budget:acc.budget+r.budget
+    }),{reach:0,impressions:0,clicks:0,engagement:0,leads:0,conversions:0,budget:0});
+  }
   
-  const cpl = totals.leads ? (totals.budget/totals.leads).toFixed(2) : 0;
-  const cpc = totals.clicks ? (totals.budget/totals.clicks).toFixed(2) : 0;
-  const ctr = totals.impressions ? ((totals.clicks/totals.impressions)*100).toFixed(2) : 0;
+  const cpl = totals.leads ? (totals.budget/totals.leads).toFixed(2) : '0.00';
+  const cpc = totals.clicks ? (totals.budget/totals.clicks).toFixed(2) : '0.00';
+  const ctr = totals.impressions ? ((totals.clicks/totals.impressions)*100).toFixed(2) : '0.00';
   
-  const fbCount = reports.filter(r=>r.platform==='facebook').length;
-  const igCount = reports.filter(r=>r.platform==='instagram').length;
+  // Aggregate video totals
+  const videoTotals = reports.reduce((acc,r)=>({
+    views: acc.views + (r.videoViews || 0),
+    p25: acc.p25 + (r.videoP25 || 0),
+    p50: acc.p50 + (r.videoP50 || 0),
+    p75: acc.p75 + (r.videoP75 || 0),
+    p100: acc.p100 + (r.videoP100 || 0),
+    sec30: acc.sec30 + (r.video30sec || 0)
+  }), {views:0,p25:0,p50:0,p75:0,p100:0,sec30:0});
+  
+  const completionRate = videoTotals.views ? ((videoTotals.p100/videoTotals.views)*100).toFixed(1) : '0';
+  const avgWatchSec = reports.length ? 
+    Math.round(reports.reduce((s,r)=>s+(r.videoAvgTime||0),0) / reports.filter(r=>(r.videoAvgTime||0)>0).length || 0) : 0;
+  
+  // KPI definitions - using inline SVG line icons (html2canvas compatible)
+  const kpiDefs = {
+    reach:        {label:'תפוצה',     value:fmt(totals.reach),         color:'#00b884', icon:iconHtml('reach'),       bg:'#e0f5ee'},
+    engagement:   {label:'מעורבות',   value:fmt(totals.engagement),    color:'#e1306c', icon:iconHtml('engagement'),  bg:'#fde8f0'},
+    leads:        {label:'לידים',     value:fmt(totals.leads),         color:'#1877f2', icon:iconHtml('leads'),       bg:'#e8f1fe'},
+    budget:       {label:'תקציב',     value:fmtCurr(totals.budget),    color:'#ff9500', icon:iconHtml('budget'),      bg:'#fff2dc'},
+    impressions:  {label:'חשיפות',    value:fmt(totals.impressions),   color:'#7c5cf2', icon:iconHtml('impressions'), bg:'#f0e7ff'},
+    clicks:       {label:'קליקים',    value:fmt(totals.clicks),        color:'#0099ff', icon:iconHtml('clicks'),      bg:'#e0f0ff'},
+    ctr:          {label:'CTR',      value:ctr+'%',                    color:'#ff7700', icon:iconHtml('ctr'),         bg:'#fff3e0'},
+    cpc:          {label:'CPC',      value:'₪'+cpc,                    color:'#e83b54', icon:iconHtml('budget'),      bg:'#ffe0e8'},
+    cpl:          {label:'CPL',      value:'₪'+cpl,                    color:'#00b884', icon:iconHtml('leads'),       bg:'#e0f5ee'},
+    conversions:  {label:'המרות',    value:fmt(totals.conversions),    color:'#1877f2', icon:iconHtml('conversions'), bg:'#e8f1fe'},
+    // Video KPIs
+    video_views:  {label:'צפיות בוידאו', value:fmt(videoTotals.views),  color:'#9c27b0', icon:iconHtml('video'),       bg:'#f3e5f5'},
+    video_completion: {label:'סיום וידאו', value:completionRate+'%',    color:'#673ab7', icon:iconHtml('video'),       bg:'#ede7f6'},
+    video_avg_time: {label:'זמן צפייה ממוצע', value:avgWatchSec+'s',    color:'#5e35b1', icon:iconHtml('video'),       bg:'#ede7f6'}
+  };
   
   // Date range
-  const dates = reports.map(r=>new Date(r.startDate));
-  const minDate = new Date(Math.min(...dates)).toLocaleDateString('he-IL');
-  const maxDate = new Date(Math.max(...dates.map(d=>new Date(d.getTime())))).toLocaleDateString('he-IL');
+  const startDate = new Date($('#pdfStartDate').value).toLocaleDateString('he-IL');
+  const endDate = new Date($('#pdfEndDate').value).toLocaleDateString('he-IL');
+  
+  // Platform breakdown
+  const fbReports = reports.filter(r=>r.platform==='facebook');
+  const igReports = reports.filter(r=>r.platform==='instagram');
   
   const today = new Date().toLocaleDateString('he-IL');
   const clientAvatar = c.logo ? 
     `<img src="${c.logo}" style="width:100%;height:100%;object-fit:cover">` : 
     `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:32px;font-weight:700;color:#1a1f2e">${initials(c.name)}</div>`;
   
-  const container = $('#pdfContainer');
-  container.innerHTML = `
-    <div style="direction:rtl;font-family:'PingHL','Heebo',sans-serif;color:#1a1f2e">
-      
-      <!-- Header with bidernet logo -->
-      <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:4px solid #d6f046;margin-bottom:26px">
-        <div>
-          <h1 style="font-size:28px;color:#1a1f2e;margin-bottom:4px;font-weight:800">דוח ביצועים ללקוח</h1>
-          <p style="color:#5a6478;font-size:13px">הופק בתאריך: ${today}</p>
+  // Build KPI cards HTML
+  const kpiCardsHtml = selectedKpis.map(k=>{
+    const def = kpiDefs[k];
+    return `
+      <div style="background:#fafbfc;border:1px solid #e5e8ef;border-right:4px solid ${def.color};border-radius:10px;padding:14px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:30px;height:30px;border-radius:8px;background:${def.bg};color:${def.color};display:flex;align-items:center;justify-content:center;font-size:14px">${def.icon}</div>
+          <div style="font-size:11px;color:#5a6478;font-weight:500">${def.label}</div>
         </div>
-        <img src="${document.querySelector('.logo-img').src}" alt="bidernet" style="height:52px;width:auto;max-width:210px">
-      </div>
+        <div style="font-size:22px;color:#1a1f2e;font-weight:700;letter-spacing:-0.5px">${def.value}</div>
+      </div>`;
+  }).join('');
+  
+  // Determine grid columns based on count
+  const kpiCols = Math.min(selectedKpis.length, 4);
+  
+  // Platform breakdown HTML - using real platform-specific data from API
+  let platformBreakdownHtml = '';
+  if(selectedSections.includes('platform-breakdown')){
+    // Sum platform-specific values across all reports
+    const fbBreakdown = reports.reduce((acc,r)=>({
+      reach: acc.reach + (r.fbReach || 0),
+      impressions: acc.impressions + (r.fbImpressions || 0),
+      clicks: acc.clicks + (r.fbClicks || 0),
+      engagement: acc.engagement + (r.fbEngagement || 0),
+      leads: acc.leads + (r.fbLeads || 0),
+      conversions: acc.conversions + (r.fbConversions || 0),
+      budget: acc.budget + (r.fbBudget || 0)
+    }),{reach:0,impressions:0,clicks:0,engagement:0,leads:0,conversions:0,budget:0});
+    
+    const igBreakdown = reports.reduce((acc,r)=>({
+      reach: acc.reach + (r.igReach || 0),
+      impressions: acc.impressions + (r.igImpressions || 0),
+      clicks: acc.clicks + (r.igClicks || 0),
+      engagement: acc.engagement + (r.igEngagement || 0),
+      leads: acc.leads + (r.igLeads || 0),
+      conversions: acc.conversions + (r.igConversions || 0),
+      budget: acc.budget + (r.igBudget || 0)
+    }),{reach:0,impressions:0,clicks:0,engagement:0,leads:0,conversions:0,budget:0});
+    
+    // Check if we have actual data (not just zeros)
+    const hasFb = fbBreakdown.impressions > 0 || fbBreakdown.reach > 0;
+    const hasIg = igBreakdown.impressions > 0 || igBreakdown.reach > 0;
+    
+    if(hasFb || hasIg){
+      // Calculate percentages
+      const totalReachBoth = fbBreakdown.reach + igBreakdown.reach;
+      const fbPct = totalReachBoth ? Math.round((fbBreakdown.reach/totalReachBoth)*100) : 0;
+      const igPct = totalReachBoth ? 100 - fbPct : 0;
       
-      <!-- Client header -->
-      <div style="display:flex;align-items:center;gap:18px;background:linear-gradient(135deg,#fafbfc 0%,#fff 100%);border:1px solid #e5e8ef;border-right:5px solid #d6f046;border-radius:14px;padding:20px;margin-bottom:24px">
-        <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#d6f046 0%,#a8c732 100%);overflow:hidden;flex-shrink:0;border:3px solid #fff;box-shadow:0 0 0 1px #e5e8ef">
-          ${clientAvatar}
-        </div>
-        <div style="flex:1">
-          <h2 style="font-size:22px;font-weight:700;color:#1a1f2e;margin-bottom:4px">${c.name}</h2>
-          <p style="font-size:13px;color:#5a6478">${reports.length} דוחות | תקופה: ${minDate} - ${maxDate}</p>
-          <p style="font-size:12px;color:#8a94a8;margin-top:2px">${fbCount} קמפיינים בפייסבוק • ${igCount} קמפיינים באינסטגרם</p>
-        </div>
-      </div>
+      // Calculate CPLs
+      const fbCpl = fbBreakdown.leads ? (fbBreakdown.budget/fbBreakdown.leads).toFixed(0) : '-';
+      const igCpl = igBreakdown.leads ? (igBreakdown.budget/igBreakdown.leads).toFixed(0) : '-';
       
-      <!-- KPIs -->
-      <h2 style="font-size:17px;margin-bottom:14px;color:#1a1f2e;font-weight:700">סיכום ביצועים כללי</h2>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
-        ${[
-          {label:'תפוצה',val:fmt(totals.reach),color:'#00b884',icon:'👁️'},
-          {label:'מעורבות',val:fmt(totals.engagement),color:'#e1306c',icon:'💬'},
-          {label:'לידים',val:fmt(totals.leads),color:'#1877f2',icon:'🎯'},
-          {label:'תקציב',val:fmtCurr(totals.budget),color:'#ff9500',icon:'💰'}
-        ].map(k=>`
-          <div style="background:#fafbfc;border:1px solid #e5e8ef;border-right:4px solid ${k.color};border-radius:10px;padding:14px">
-            <div style="font-size:11px;color:#5a6478;font-weight:500;margin-bottom:8px">${k.label}</div>
-            <div style="font-size:22px;color:#1a1f2e;font-weight:700;letter-spacing:-0.5px">${k.val}</div>
-          </div>`).join('')}
-      </div>
+      // Determine winner badge
+      let fbBadge = '', igBadge = '';
+      if(fbBreakdown.leads > igBreakdown.leads) fbBadge = '<span style="background:#00b884;color:#fff;padding:2px 7px;border-radius:5px;font-size:9px;font-weight:600;margin-right:6px">🏆 מוביל בלידים</span>';
+      else if(igBreakdown.leads > fbBreakdown.leads) igBadge = '<span style="background:#00b884;color:#fff;padding:2px 7px;border-radius:5px;font-size:9px;font-weight:600;margin-right:6px">🏆 מוביל בלידים</span>';
       
-      <!-- Secondary KPIs -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px">
-        ${[
-          {label:'חשיפות',val:fmt(totals.impressions)},
-          {label:'קליקים',val:fmt(totals.clicks)},
-          {label:'CTR',val:ctr+'%'},
-          {label:'עלות לליד',val:'₪'+cpl}
-        ].map(k=>`
-          <div style="background:#fff;border:1px solid #e5e8ef;border-radius:10px;padding:12px">
-            <div style="font-size:11px;color:#8a94a8;font-weight:500;margin-bottom:6px">${k.label}</div>
-            <div style="font-size:17px;color:#1a1f2e;font-weight:700">${k.val}</div>
-          </div>`).join('')}
-      </div>
-      
-      <!-- Reports table -->
-      <h2 style="font-size:17px;margin-bottom:14px;color:#1a1f2e;font-weight:700">היסטוריית דוחות (${reports.length})</h2>
+      platformBreakdownHtml = `
+        <h2 style="font-size:17px;margin-bottom:14px;color:#1a1f2e;font-weight:700;margin-top:24px">📈 פירוט לפי פלטפורמה</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+          <div style="background:linear-gradient(135deg,#fafbfc,#fff);border:1px solid #e5e8ef;border-right:5px solid #1877f2;border-radius:12px;padding:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="background:#1877f2;color:#fff;padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700">📘 Facebook</div>
+                ${fbBadge}
+              </div>
+              <div style="font-size:20px;font-weight:800;color:#1877f2">${fbPct}%</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px">
+              <div style="background:#fff;border:1px solid #eef0f4;border-radius:6px;padding:7px"><div style="color:#5a6478;margin-bottom:2px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('reach')}</span>תפוצה</div><strong style="font-size:14px;color:#1a1f2e">${fmt(fbBreakdown.reach)}</strong></div>
+              <div style="background:#fff;border:1px solid #eef0f4;border-radius:6px;padding:7px"><div style="color:#5a6478;margin-bottom:2px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('leads')}</span>לידים</div><strong style="font-size:14px;color:#1a1f2e">${fmt(fbBreakdown.leads)}</strong></div>
+              <div style="background:#fff;border:1px solid #eef0f4;border-radius:6px;padding:7px"><div style="color:#5a6478;margin-bottom:2px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('budget')}</span>תקציב</div><strong style="font-size:14px;color:#1a1f2e">${fmtCurr(fbBreakdown.budget)}</strong></div>
+              <div style="background:#fff;border:1px solid #eef0f4;border-radius:6px;padding:7px"><div style="color:#5a6478;margin-bottom:2px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('leads')}</span>CPL</div><strong style="font-size:14px;color:#00b884">${fbCpl==='-'?'-':'₪'+fbCpl}</strong></div>
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,#fafbfc,#fff);border:1px solid #e5e8ef;border-right:5px solid #e1306c;border-radius:12px;padding:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="background:linear-gradient(135deg,#e1306c,#c92965);color:#fff;padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700">📸 Instagram</div>
+                ${igBadge}
+              </div>
+              <div style="font-size:20px;font-weight:800;color:#e1306c">${igPct}%</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px">
+              <div style="background:#fff;border:1px solid #eef0f4;border-radius:6px;padding:7px"><div style="color:#5a6478;margin-bottom:2px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('reach')}</span>תפוצה</div><strong style="font-size:14px;color:#1a1f2e">${fmt(igBreakdown.reach)}</strong></div>
+              <div style="background:#fff;border:1px solid #eef0f4;border-radius:6px;padding:7px"><div style="color:#5a6478;margin-bottom:2px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('leads')}</span>לידים</div><strong style="font-size:14px;color:#1a1f2e">${fmt(igBreakdown.leads)}</strong></div>
+              <div style="background:#fff;border:1px solid #eef0f4;border-radius:6px;padding:7px"><div style="color:#5a6478;margin-bottom:2px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('budget')}</span>תקציב</div><strong style="font-size:14px;color:#1a1f2e">${fmtCurr(igBreakdown.budget)}</strong></div>
+              <div style="background:#fff;border:1px solid #eef0f4;border-radius:6px;padding:7px"><div style="color:#5a6478;margin-bottom:2px"><span style="display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-left:3px">${iconHtml('leads')}</span>CPL</div><strong style="font-size:14px;color:#00b884">${igCpl==='-'?'-':'₪'+igCpl}</strong></div>
+            </div>
+          </div>
+        </div>`;
+    }
+  }
+  
+  // Campaigns table HTML
+  let campaignsTableHtml = '';
+  if(selectedSections.includes('campaigns-table')){
+    campaignsTableHtml = `
+      <h2 style="font-size:17px;margin-bottom:14px;color:#1a1f2e;font-weight:700;margin-top:24px">היסטוריית קמפיינים (${reports.length})</h2>
       <table style="width:100%;border-collapse:collapse;font-size:11px;border-radius:8px;overflow:hidden;margin-bottom:20px">
         <thead>
           <tr style="background:#1a1f2e;color:#fff">
-            <th style="padding:11px 9px;text-align:right;font-weight:600">קמפיין</th>
-            <th style="padding:11px 9px;text-align:right;font-weight:600">פלטפ׳</th>
-            <th style="padding:11px 9px;text-align:right;font-weight:600">תאריכים</th>
-            <th style="padding:11px 9px;text-align:right;font-weight:600">תפוצה</th>
-            <th style="padding:11px 9px;text-align:right;font-weight:600">מעורבות</th>
-            <th style="padding:11px 9px;text-align:right;font-weight:600">לידים</th>
-            <th style="padding:11px 9px;text-align:right;font-weight:600">תקציב</th>
-            <th style="padding:11px 9px;text-align:right;font-weight:600">עלות/ליד</th>
+            <th style="padding:10px 8px;text-align:right;font-weight:600">קמפיין</th>
+            <th style="padding:10px 8px;text-align:right;font-weight:600">פלטפ׳</th>
+            <th style="padding:10px 8px;text-align:right;font-weight:600">תאריכים</th>
+            <th style="padding:10px 8px;text-align:right;font-weight:600">תפוצה</th>
+            <th style="padding:10px 8px;text-align:right;font-weight:600">לידים</th>
+            <th style="padding:10px 8px;text-align:right;font-weight:600">תקציב</th>
+            <th style="padding:10px 8px;text-align:right;font-weight:600">CPL</th>
           </tr>
         </thead>
         <tbody>
           ${reports.map((r,i)=>{
             const rcpl = r.leads ? '₪'+(r.budget/r.leads).toFixed(0) : '-';
+            // Platform badge - support 'both' for cross-platform campaigns
+            let platformBadge;
+            if(r.platform==='both'){
+              platformBadge = `<span style="background:linear-gradient(90deg,#1877f2 50%,#e1306c 50%);color:#fff;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600">FB+IG</span>`;
+            } else if(r.platform==='facebook'){
+              platformBadge = `<span style="background:#1877f2;color:#fff;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600">FB</span>`;
+            } else if(r.platform==='instagram'){
+              platformBadge = `<span style="background:#e1306c;color:#fff;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600">IG</span>`;
+            } else {
+              platformBadge = `<span style="background:#8a94a8;color:#fff;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600">${r.platform}</span>`;
+            }
             return `
             <tr style="background:${i%2?'#fafbfc':'#fff'};border-bottom:1px solid #eef0f4">
-              <td style="padding:9px"><strong style="color:#1a1f2e">${r.name}</strong></td>
-              <td style="padding:9px"><span style="background:${r.platform==='facebook'?'#1877f2':'#e1306c'};color:#fff;padding:2px 8px;border-radius:4px;font-size:9px;font-weight:600">${r.platform==='facebook'?'FB':'IG'}</span></td>
-              <td style="padding:9px;color:#5a6478;font-size:10px">${r.startDate}<br>${r.endDate}</td>
-              <td style="padding:9px">${fmt(r.reach)}</td>
-              <td style="padding:9px">${fmt(r.engagement||0)}</td>
-              <td style="padding:9px"><strong>${fmt(r.leads)}</strong></td>
-              <td style="padding:9px"><strong>${fmtCurr(r.budget)}</strong></td>
-              <td style="padding:9px;color:#00b884;font-weight:600">${rcpl}</td>
+              <td style="padding:9px 8px"><strong style="color:#1a1f2e">${r.name}</strong></td>
+              <td style="padding:9px 8px">${platformBadge}</td>
+              <td style="padding:9px 8px;color:#5a6478;font-size:10px">${r.startDate}<br>${r.endDate}</td>
+              <td style="padding:9px 8px">${fmt(r.reach)}</td>
+              <td style="padding:9px 8px"><strong>${fmt(r.leads)}</strong></td>
+              <td style="padding:9px 8px"><strong>${fmtCurr(r.budget)}</strong></td>
+              <td style="padding:9px 8px;color:#00b884;font-weight:600">${rcpl}</td>
             </tr>`}).join('')}
           <tr style="background:#1a1f2e;color:#fff;font-weight:700">
-            <td style="padding:11px 9px" colspan="3">סה"כ</td>
-            <td style="padding:11px 9px">${fmt(totals.reach)}</td>
-            <td style="padding:11px 9px">${fmt(totals.engagement)}</td>
-            <td style="padding:11px 9px">${fmt(totals.leads)}</td>
-            <td style="padding:11px 9px">${fmtCurr(totals.budget)}</td>
-            <td style="padding:11px 9px;color:#d6f046">₪${cpl}</td>
+            <td style="padding:10px 8px" colspan="3">סה"כ</td>
+            <td style="padding:10px 8px">${fmt(totals.reach)}</td>
+            <td style="padding:10px 8px">${fmt(totals.leads)}</td>
+            <td style="padding:10px 8px">${fmtCurr(totals.budget)}</td>
+            <td style="padding:10px 8px;color:#d6f046">₪${cpl}</td>
           </tr>
         </tbody>
-      </table>
+      </table>`;
+  }
+  
+  // Notes section
+  let notesHtml = '';
+  if(selectedSections.includes('notes') && notesText){
+    notesHtml = `
+      <div style="background:#fafbfc;border:1px solid #e5e8ef;border-right:3px solid #d6f046;border-radius:10px;padding:14px;margin-bottom:20px;margin-top:18px">
+        <div style="font-size:12px;color:#5a6478;font-weight:600;margin-bottom:6px">הערות</div>
+        <div style="font-size:13px;color:#1a1f2e;line-height:1.6;white-space:pre-wrap">${notesText.replace(/[<>]/g, '')}</div>
+      </div>`;
+  }
+  
+  // Smart insights based on the data
+  let insightsHtml = '';
+  if(selectedSections.includes('platform-breakdown')){
+    const fbBd = reports.reduce((a,r)=>({reach:a.reach+(r.fbReach||0),leads:a.leads+(r.fbLeads||0),budget:a.budget+(r.fbBudget||0)}),{reach:0,leads:0,budget:0});
+    const igBd = reports.reduce((a,r)=>({reach:a.reach+(r.igReach||0),leads:a.leads+(r.igLeads||0),budget:a.budget+(r.igBudget||0)}),{reach:0,leads:0,budget:0});
+    
+    if((fbBd.reach > 0 || igBd.reach > 0) && (fbBd.leads > 0 || igBd.leads > 0)){
+      const insights = [];
+      
+      // CPL comparison
+      const fbCpl = fbBd.leads ? fbBd.budget/fbBd.leads : Infinity;
+      const igCpl = igBd.leads ? igBd.budget/igBd.leads : Infinity;
+      if(fbCpl < Infinity && igCpl < Infinity && fbCpl > 0 && igCpl > 0){
+        const diff = Math.abs(fbCpl - igCpl);
+        const pct = Math.round((diff/Math.max(fbCpl,igCpl))*100);
+        if(pct > 5){
+          if(fbCpl < igCpl){
+            insights.push(`📘 <strong>Facebook</strong> מביא לידים ב-<strong>${pct}% זול יותר</strong> מאינסטגרם (₪${fbCpl.toFixed(0)} מול ₪${igCpl.toFixed(0)})`);
+          } else {
+            insights.push(`📸 <strong>Instagram</strong> מביא לידים ב-<strong>${pct}% זול יותר</strong> מפייסבוק (₪${igCpl.toFixed(0)} מול ₪${fbCpl.toFixed(0)})`);
+          }
+        }
+      }
+      
+      // Reach distribution
+      const totalReach = fbBd.reach + igBd.reach;
+      if(totalReach > 0){
+        const fbPct = Math.round((fbBd.reach/totalReach)*100);
+        if(fbPct >= 60){
+          insights.push(`👁️ רוב התפוצה (<strong>${fbPct}%</strong>) הגיעה מ-<strong>Facebook</strong>`);
+        } else if(fbPct <= 40){
+          insights.push(`👁️ רוב התפוצה (<strong>${100-fbPct}%</strong>) הגיעה מ-<strong>Instagram</strong>`);
+        } else {
+          insights.push(`👁️ חלוקה מאוזנת של התפוצה בין הפלטפורמות (${fbPct}% FB / ${100-fbPct}% IG)`);
+        }
+      }
+      
+      // Recommendation
+      if(fbCpl < Infinity && igCpl < Infinity && fbCpl > 0 && igCpl > 0){
+        const cheaper = fbCpl < igCpl ? 'Facebook' : 'Instagram';
+        insights.push(`💡 <strong>המלצה:</strong> שקלו להגדיל תקציב ב-${cheaper} עבור CPL טוב יותר`);
+      }
+      
+      if(insights.length > 0){
+        insightsHtml = `
+          <div style="background:linear-gradient(135deg,#fff8e0,#fffef5);border:1px solid #ffd56b;border-right:4px solid #ff9500;border-radius:12px;padding:16px;margin-bottom:20px;margin-top:18px">
+            <div style="font-size:13px;color:#1a1f2e;font-weight:700;margin-bottom:10px">💡 תובנות חכמות</div>
+            <div style="display:flex;flex-direction:column;gap:7px;font-size:12px;color:#5a6478;line-height:1.5">
+              ${insights.map(i=>`<div>• ${i}</div>`).join('')}
+            </div>
+          </div>`;
+      }
+    }
+  }
+  
+  const container = $('#pdfContainer');
+  container.innerHTML = `
+    <div style="direction:rtl;font-family:'PingHL','Heebo',sans-serif;color:#1a1f2e">
+      
+      <!-- Header -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:4px solid #d6f046;margin-bottom:24px">
+        <div>
+          <h1 style="font-size:26px;color:#1a1f2e;margin-bottom:4px;font-weight:800">דוח ביצועים${platformSource==='facebook' ? ' - Facebook' : platformSource==='instagram' ? ' - Instagram' : ''}</h1>
+          <p style="color:#5a6478;font-size:13px">תקופה: ${startDate} - ${endDate} | הופק: ${today}${platformSource!=='combined' ? ' | <strong style="color:'+(platformSource==='facebook'?'#1877f2':'#e1306c')+'">מסונן: ' + (platformSource==='facebook'?'📘 Facebook':'📸 Instagram') + ' בלבד</strong>' : ''}</p>
+        </div>
+        <img src="${document.querySelector('.logo-img').src}" alt="bidernet" style="height:48px;width:auto;max-width:200px">
+      </div>
+      
+      <!-- Client Card -->
+      <div style="display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#fafbfc,#fff);border:1px solid #e5e8ef;border-right:5px solid #d6f046;border-radius:12px;padding:16px;margin-bottom:22px">
+        <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#d6f046,#a8c732);overflow:hidden;flex-shrink:0;border:3px solid #fff;box-shadow:0 0 0 1px #e5e8ef">${clientAvatar}</div>
+        <div style="flex:1">
+          <h2 style="font-size:20px;font-weight:700;color:#1a1f2e;margin-bottom:3px">${c.name}</h2>
+          <p style="font-size:12px;color:#5a6478">${reports.length} קמפיינים בתקופה ${startDate} - ${endDate}</p>
+        </div>
+      </div>
+      
+      <!-- Selected KPIs -->
+      <h2 style="font-size:17px;margin-bottom:14px;color:#1a1f2e;font-weight:700">📊 סיכום ביצועים</h2>
+      <div style="display:grid;grid-template-columns:repeat(${kpiCols},1fr);gap:10px;margin-bottom:20px">
+        ${kpiCardsHtml}
+      </div>
+      
+      ${platformBreakdownHtml}
+      ${insightsHtml}
+      ${campaignsTableHtml}
+      ${notesHtml}
       
       <!-- Footer -->
       <div style="margin-top:24px;padding-top:14px;border-top:1px solid #eef0f4;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#8a94a8">
-        <div>דוח שהופק עבור: <strong style="color:#1a1f2e">${c.name}</strong></div>
+        <div>דוח עבור: <strong style="color:#1a1f2e">${c.name}</strong></div>
         <div>bidernet group © 2026 | Reports Analytics</div>
       </div>
     </div>`;
   
-  try{
-    const canvas = await html2canvas(container,{scale:2,backgroundColor:'#ffffff',useCORS:true});
+  try {
+    const canvas = await html2canvas(container, {scale: 2, backgroundColor: '#ffffff', useCORS: true});
     const img = canvas.toDataURL('image/png');
     const {jsPDF} = window.jspdf;
     const pdf = new jsPDF('p','mm','a4');
     const w = pdf.internal.pageSize.getWidth();
-    const h = (canvas.height*w)/canvas.width;
+    const h = (canvas.height * w) / canvas.width;
     const pageH = pdf.internal.pageSize.getHeight();
     
     if(h <= pageH){
-      pdf.addImage(img,'PNG',0,0,w,h);
+      pdf.addImage(img, 'PNG', 0, 0, w, h);
     } else {
-      // Multi-page handling for long reports
       let position = 0;
       let remainingHeight = h;
       while(remainingHeight > 0){
-        pdf.addImage(img,'PNG',0,position === 0 ? 0 : -(h - remainingHeight),w,h);
+        pdf.addImage(img, 'PNG', 0, position === 0 ? 0 : -(h - remainingHeight), w, h);
         remainingHeight -= pageH;
         position++;
         if(remainingHeight > 0) pdf.addPage();
       }
     }
     
-    const safeName = c.name.replace(/[^\u0590-\u05FFa-zA-Z0-9]/g,'-').replace(/-+/g,'-');
-    pdf.save(`bidernet-${safeName}-${today.replace(/\//g,'-')}.pdf`);
+    const safeName = c.name.replace(/[^\u0590-\u05FFa-zA-Z0-9]/g, '-').replace(/-+/g, '-');
+    const fileName = `bidernet-${safeName}-${startDate.replace(/\//g,'-')}-${endDate.replace(/\//g,'-')}.pdf`;
+    pdf.save(fileName);
     toast('PDF הורד בהצלחה ✓');
-  }catch(e){
+  } catch(e){
     console.error(e);
     toast('שגיאה בייצוא PDF');
   }
