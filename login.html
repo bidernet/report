@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>כניסה | bidernet Reports</title>
+<style>
+:root {
+  --bg-app: #f5f6f8;
+  --bg-card: #ffffff;
+  --bg-soft: #f8f9fb;
+  --border: #e5e8ef;
+  --text-primary: #1a1f2e;
+  --text-secondary: #5a6478;
+  --text-muted: #8a94a8;
+  --accent: #d6f046;
+  --accent-hover: #c5e234;
+  --accent-dark: #1a1f2e;
+  --red: #e83b54;
+  --red-soft: #fde7eb;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'PingHL', 'Heebo', Arial, sans-serif;
+  background: var(--bg-app);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: var(--text-primary);
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(214,240,70,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(24,119,242,0.05) 0%, transparent 50%);
+}
+.login-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 36px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 12px 48px rgba(20,28,48,0.08);
+}
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.logo-text {
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+.logo-text small {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  margin-top: -3px;
+}
+h1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  transition: all 0.15s;
+}
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(214,240,70,0.25);
+}
+.btn-login {
+  width: 100%;
+  background: var(--accent);
+  color: var(--accent-dark);
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+  transition: all 0.15s;
+}
+.btn-login:hover { background: var(--accent-hover); }
+.btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+.alert {
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  display: none;
+}
+.alert.show { display: block; }
+.alert.error {
+  background: var(--red-soft);
+  color: var(--red);
+  border: 1px solid rgba(232,59,84,0.2);
+}
+.footer-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+</style>
+</head>
+<body>
+<div class="login-box">
+  <div class="logo">
+    <div class="logo-text">bidernet<small>Reports</small></div>
+  </div>
+  
+  <h1>כניסה למערכת</h1>
+  <p class="subtitle">הזן שם משתמש וסיסמה כדי להמשיך</p>
+  
+  <div class="alert error" id="errorAlert"></div>
+  
+  <form id="loginForm">
+    <div class="form-group">
+      <label>שם משתמש / אימייל</label>
+      <input type="text" id="username" required autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>סיסמה</label>
+      <input type="password" id="password" required autocomplete="current-password">
+    </div>
+    <button type="submit" class="btn-login" id="submitBtn">כניסה ←</button>
+  </form>
+  
+  <div class="footer-link">
+    © 2026 bidernet group | report.bidernet.co.il
+  </div>
+</div>
+
+<script>
+const form = document.getElementById('loginForm');
+const errorAlert = document.getElementById('errorAlert');
+const submitBtn = document.getElementById('submitBtn');
+
+// Check if already logged in
+(async function checkAuth() {
+  try {
+    const resp = await fetch('/api/auth.php?action=me', { credentials: 'include' });
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data.success) {
+        window.location.href = '/';
+      }
+    }
+  } catch (e) {}
+})();
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  errorAlert.classList.remove('show');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'מתחבר...';
+  
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  
+  try {
+    const resp = await fetch('/api/auth.php?action=login', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    
+    const data = await resp.json();
+    
+    if (data.success) {
+      window.location.href = '/';
+    } else {
+      errorAlert.textContent = '⚠️ ' + (data.error || 'שגיאת התחברות');
+      errorAlert.classList.add('show');
+    }
+  } catch (err) {
+    errorAlert.textContent = '⚠️ שגיאת חיבור לשרת';
+    errorAlert.classList.add('show');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'כניסה ←';
+  }
+});
+</script>
+</body>
+</html>

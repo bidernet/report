@@ -1,0 +1,25 @@
+# Sensitive files - NEVER commit these!
+api/config.php
+.env
+*.log
+logs/*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temp files
+*.tmp
+*.bak
+*.backup
+
+# After installation
+install.php
