@@ -1,5 +1,7 @@
 # 🚀 bidernet Reports - מערכת דוחות קמפיינים
 
+**גרסה נוכחית: v1.0.1** | [📋 CHANGELOG](CHANGELOG.md)
+
 מערכת ניהול דוחות קמפיינים לפייסבוק ואינסטגרם.
 **דומיין:** report.bidernet.co.il
 
