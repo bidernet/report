@@ -119,6 +119,130 @@ input:focus {
 }
 .btn-login:hover { background: var(--accent-hover); }
 .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Forgot Password */
+.forgot-link {
+  text-align: center;
+  margin-top: 14px;
+}
+.forgot-link a {
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.forgot-link a:hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
+/* Forgot Modal */
+.forgot-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+.forgot-modal.active {
+  display: flex;
+}
+.forgot-modal-content {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 480px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: modalIn 0.2s ease-out;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.forgot-close {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: none;
+  border: none;
+  font-size: 26px;
+  color: var(--text-muted);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.forgot-close:hover {
+  background: var(--bg-soft);
+  color: var(--text-primary);
+}
+.forgot-modal-content h3 {
+  font-size: 19px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+.forgot-modal-content > p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.forgot-options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.forgot-option {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-right: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.forgot-option strong {
+  display: block;
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.forgot-option p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.forgot-option ol {
+  padding-right: 18px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.forgot-option ol li {
+  margin-bottom: 3px;
+}
+.forgot-option code {
+  background: rgba(0,0,0,0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: var(--red);
+}
 .alert {
   padding: 11px 14px;
   border-radius: 9px;
@@ -162,6 +286,37 @@ input:focus {
     </div>
     <button type="submit" class="btn-login" id="submitBtn">כניסה ←</button>
   </form>
+  
+  <div class="forgot-link">
+    <a href="#" id="forgotPasswordLink">שכחתי סיסמה</a>
+  </div>
+  
+  <!-- Forgot Password Modal -->
+  <div id="forgotModal" class="forgot-modal">
+    <div class="forgot-modal-content">
+      <button class="forgot-close" id="forgotClose">×</button>
+      <h3>🔐 שחזור סיסמה</h3>
+      <p>מערכת זו היא <strong>מערכת פנימית</strong> ולא תומכת בשחזור סיסמה דרך אימייל.</p>
+      
+      <div class="forgot-options">
+        <div class="forgot-option">
+          <strong>אופציה 1: פנה למנהל המערכת</strong>
+          <p>אם אתה משתמש רגיל, פנה למנהל ובקש שיאפס לך את הסיסמה דרך פאנל הניהול.</p>
+        </div>
+        
+        <div class="forgot-option">
+          <strong>אופציה 2: שחזור חירום (למנהל)</strong>
+          <p>אם אתה מנהל המערכת ויש לך גישת FTP/cPanel:</p>
+          <ol>
+            <li>העלה את <code>reset-password.php</code> ל-<code>public_html/report/</code></li>
+            <li>גש ל-<code>report.bidernet.co.il/reset-password.php</code></li>
+            <li>אפס את הסיסמה</li>
+            <li><strong>מחק את הקובץ מיד אחרי השימוש!</strong></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
   
   <div class="footer-link">
     © 2026 bidernet group | report.bidernet.co.il
@@ -217,6 +372,24 @@ form.addEventListener('submit', async (e) => {
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = 'כניסה ←';
+  }
+});
+
+// Forgot Password Modal
+const forgotModal = document.getElementById('forgotModal');
+document.getElementById('forgotPasswordLink').addEventListener('click', (e) => {
+  e.preventDefault();
+  forgotModal.classList.add('active');
+});
+document.getElementById('forgotClose').addEventListener('click', () => {
+  forgotModal.classList.remove('active');
+});
+forgotModal.addEventListener('click', (e) => {
+  if (e.target === forgotModal) forgotModal.classList.remove('active');
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && forgotModal.classList.contains('active')) {
+    forgotModal.classList.remove('active');
   }
 });
 </script>

@@ -651,6 +651,17 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
         <span>השוואת תקופות</span>
         <span class="icon">⚖️</span>
       </div>
+      <div class="nav-item admin-only" data-section="users" id="navUsers" style="display:none">
+        <span>משתמשים</span>
+        <span class="icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="7" r="3"/>
+            <path d="M3 21v-1a6 6 0 0 1 12 0v1"/>
+            <circle cx="17" cy="9" r="2.5"/>
+            <path d="M14.5 19v-.5a4.5 4.5 0 0 1 7-3.7"/>
+          </svg>
+        </span>
+      </div>
     </div>
 
     <div class="nav-section">
@@ -1103,7 +1114,92 @@ textarea.form-control{resize:vertical;min-height:80px;font-family:inherit}
       </div>
     </div>
 
+    <!-- Users Section (Admin only) -->
+    <div class="section" id="section-users">
+      <div class="header">
+        <div class="header-title">
+          <h1>ניהול משתמשים</h1>
+          <p>הוספה, עריכה ומחיקה של משתמשי מערכת</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="addUserBtn">
+            <span class="svg-icon" style="width:14px;height:14px"><svg viewBox="0 0 24 24"><use href="#icon-add"/></svg></span>
+            הוספת משתמש
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">משתמשים במערכת</div></div>
+        <div class="table-wrap">
+          <table class="data-table" id="usersTable">
+            <thead>
+              <tr>
+                <th>שם משתמש</th>
+                <th>שם מלא</th>
+                <th>אימייל</th>
+                <th>תפקיד</th>
+                <th>סטטוס</th>
+                <th>כניסה אחרונה</th>
+                <th>פעולות</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:30px">טוען...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </main>
+</div>
+
+<!-- User Modal (Add/Edit) -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal" style="max-width:480px">
+    <h2 id="userModalTitle">הוספת משתמש</h2>
+    <form id="userForm">
+      <input type="hidden" id="userIdInput">
+      <div class="form-group">
+        <label>שם משתמש <span style="color:var(--red)">*</span></label>
+        <input type="text" class="form-control" id="userUsername" required minlength="3" pattern="[a-zA-Z0-9_]+" title="אותיות באנגלית, מספרים וקווים תחתונים בלבד">
+        <small style="color:var(--text-muted);font-size:11px;display:block;margin-top:3px">אותיות באנגלית, מספרים וקו תחתון</small>
+      </div>
+      <div class="form-group">
+        <label>שם מלא <span style="color:var(--red)">*</span></label>
+        <input type="text" class="form-control" id="userFullName" required>
+      </div>
+      <div class="form-group">
+        <label>אימייל <span style="color:var(--red)">*</span></label>
+        <input type="email" class="form-control" id="userEmail" required>
+      </div>
+      <div class="form-group">
+        <label>סיסמה <span id="passwordRequired" style="color:var(--red)">*</span></label>
+        <input type="password" class="form-control" id="userPassword" minlength="8" autocomplete="new-password">
+        <small style="color:var(--text-muted);font-size:11px;display:block;margin-top:3px" id="passwordHint">לפחות 8 תווים</small>
+      </div>
+      <div class="form-group">
+        <label>תפקיד <span style="color:var(--red)">*</span></label>
+        <select class="form-control" id="userRole" required>
+          <option value="user">משתמש רגיל</option>
+          <option value="admin">מנהל מערכת</option>
+        </select>
+        <small style="color:var(--text-muted);font-size:11px;display:block;margin-top:3px">מנהל יכול לנהל משתמשים אחרים</small>
+      </div>
+      <div class="form-group" id="userActiveGroup" style="display:none">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+          <input type="checkbox" id="userActive" checked style="width:18px;height:18px;cursor:pointer">
+          <span>חשבון פעיל</span>
+        </label>
+        <small style="color:var(--text-muted);font-size:11px;display:block;margin-top:3px">משתמשים לא פעילים לא יכולים להתחבר</small>
+      </div>
+      <div class="form-actions" style="border:none;padding:0;margin-top:18px">
+        <button type="button" class="btn btn-ghost" id="userModalCancel">ביטול</button>
+        <button type="submit" class="btn btn-primary" id="userModalSubmit">שמור</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <div class="modal-overlay" id="confirmModal">
@@ -1637,6 +1733,7 @@ function goTo(section){
   if(section==='clients') renderClients();
   if(section==='campaigns') renderTable();
   if(section==='add') populateClientSelect();
+  if(section==='users') renderUsers();
 }
 $$('.nav-item[data-section]').forEach(item=>{
   item.addEventListener('click',()=>goTo(item.dataset.section));
@@ -2571,13 +2668,17 @@ $('#confirmOk').addEventListener('click', async ()=>{
       for(const c of clients){
         await api('/clients.php?id=' + c.id, { method: 'DELETE' });
       }
+    } else if(pendingDelete.type==='user'){
+      await api('/users.php?id=' + pendingDelete.id, { method: 'DELETE' });
     }
-    await loadData();
+    
+    if(pendingDelete.type !== 'user') await loadData();
     toast('נמחק בהצלחה');
   } catch(err) {
     toast('שגיאה: ' + err.message);
   }
   
+  const wasUserDelete = pendingDelete && pendingDelete.type === 'user';
   $('#confirmModal').classList.remove('active');
   pendingDelete = null;
   
@@ -2588,6 +2689,7 @@ $('#confirmOk').addEventListener('click', async ()=>{
     if(id==='section-dashboard') renderDashboard();
     if(id==='section-clients') renderClients();
     if(id==='section-campaigns') renderTable();
+    if(id==='section-users') renderUsers();
     if(id==='section-client-profile' && currentClientId){
       if(getClient(currentClientId)) openClientProfile(currentClientId);
       else goTo('clients');
@@ -3401,7 +3503,164 @@ $('#logoutBtn').addEventListener('click', async () => {
   }
 });
 
-// ============ INIT ============
+// ============ USERS MANAGEMENT ============
+let editingUserId = null;
+
+async function renderUsers(){
+  const tbody = $('#usersTableBody');
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:30px">טוען...</td></tr>';
+  
+  try {
+    const resp = await api('/users.php');
+    const users = resp.users || [];
+    
+    if(users.length === 0){
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:30px">אין משתמשים</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = users.map(u => {
+      const isSelf = u.id === currentUser.id;
+      const lastLogin = u.last_login ? new Date(u.last_login).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : 'מעולם לא';
+      const roleBadge = u.role === 'admin' 
+        ? '<span style="background:#d6f046;color:#1a1f2e;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:600">👑 מנהל</span>'
+        : '<span style="background:#e0f0ff;color:#0099ff;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:600">👤 משתמש</span>';
+      const statusBadge = u.is_active
+        ? '<span style="background:#e0f5ee;color:#00b884;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:600">● פעיל</span>'
+        : '<span style="background:#fde8ea;color:#e83b54;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:600">○ מושבת</span>';
+      
+      return `
+        <tr>
+          <td><strong>${u.username}</strong>${isSelf?' <span style="color:var(--text-muted);font-size:11px">(אני)</span>':''}</td>
+          <td>${u.full_name}</td>
+          <td style="font-size:12px;color:var(--text-secondary)">${u.email}</td>
+          <td>${roleBadge}</td>
+          <td>${statusBadge}</td>
+          <td style="font-size:11px;color:var(--text-muted)">${lastLogin}</td>
+          <td>
+            <div class="table-actions">
+              <button class="icon-btn" onclick="editUser(${u.id})" title="עריכה"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-edit"/></svg></button>
+              ${isSelf ? '' : `<button class="icon-btn delete" onclick="askDeleteUser(${u.id}, '${u.username.replace(/'/g,"\\'")}', '${u.role}')" title="מחיקה"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-trash"/></svg></button>`}
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+  } catch(e){
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--red);padding:30px">שגיאה בטעינה: ${e.message}</td></tr>`;
+  }
+}
+
+function openUserModal(user = null){
+  editingUserId = user ? user.id : null;
+  $('#userModalTitle').textContent = user ? 'עריכת משתמש' : 'הוספת משתמש';
+  $('#userIdInput').value = user ? user.id : '';
+  $('#userUsername').value = user ? user.username : '';
+  $('#userFullName').value = user ? user.full_name : '';
+  $('#userEmail').value = user ? user.email : '';
+  $('#userPassword').value = '';
+  $('#userRole').value = user ? user.role : 'user';
+  $('#userActive').checked = user ? user.is_active : true;
+  
+  // When editing - username can't be changed, password is optional, show active toggle
+  if(user){
+    $('#userUsername').disabled = true;
+    $('#passwordRequired').style.display = 'none';
+    $('#passwordHint').textContent = 'השאר ריק כדי לא לשנות סיסמה (לפחות 8 תווים אם משנים)';
+    $('#userPassword').required = false;
+    $('#userActiveGroup').style.display = '';
+    $('#userModalSubmit').textContent = 'שמור שינויים';
+  } else {
+    $('#userUsername').disabled = false;
+    $('#passwordRequired').style.display = '';
+    $('#passwordHint').textContent = 'לפחות 8 תווים';
+    $('#userPassword').required = true;
+    $('#userActiveGroup').style.display = 'none';
+    $('#userModalSubmit').textContent = 'הוסף משתמש';
+  }
+  
+  $('#userModal').classList.add('active');
+  setTimeout(()=>{
+    if(!user) $('#userUsername').focus();
+    else $('#userFullName').focus();
+  }, 100);
+}
+
+async function editUser(id){
+  try {
+    const resp = await api('/users.php');
+    const user = resp.users.find(u => u.id === id);
+    if(!user){ toast('המשתמש לא נמצא'); return; }
+    openUserModal(user);
+  } catch(e){
+    toast('שגיאה: ' + e.message);
+  }
+}
+
+function askDeleteUser(id, username, role){
+  pendingDelete = {type:'user', id};
+  $('#confirmTitle').textContent = 'מחיקת משתמש';
+  $('#confirmText').innerHTML = `האם למחוק את המשתמש <strong>${username}</strong>?<br>${role==='admin'?'<span style="color:var(--red);font-size:12px">⚠️ זה משתמש מנהל - וודא שיש מנהל נוסף!</span>':'<span style="font-size:12px;color:var(--text-muted)">פעולה זו בלתי הפיכה</span>'}`;
+  $('#confirmModal').classList.add('active');
+}
+
+// Event Listeners
+$('#addUserBtn').addEventListener('click', () => openUserModal());
+$('#userModalCancel').addEventListener('click', () => {
+  $('#userModal').classList.remove('active');
+});
+$('#userModal').addEventListener('click', (e) => {
+  if(e.target === $('#userModal')) $('#userModal').classList.remove('active');
+});
+
+$('#userForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const username = $('#userUsername').value.trim();
+  const fullName = $('#userFullName').value.trim();
+  const email = $('#userEmail').value.trim();
+  const password = $('#userPassword').value;
+  const role = $('#userRole').value;
+  const isActive = $('#userActive').checked;
+  
+  // Validate
+  if(!editingUserId && password.length < 8){
+    toast('הסיסמה חייבת להיות באורך 8 תווים לפחות');
+    return;
+  }
+  if(editingUserId && password && password.length < 8){
+    toast('הסיסמה חייבת להיות באורך 8 תווים לפחות');
+    return;
+  }
+  
+  const submitBtn = $('#userModalSubmit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'שומר...';
+  
+  try {
+    if(editingUserId){
+      // Update existing user
+      const body = {full_name:fullName, email, role, is_active:isActive};
+      if(password) body.password = password;
+      await api(`/users.php?id=${editingUserId}`, {method:'PUT', body:JSON.stringify(body)});
+      toast('✓ המשתמש עודכן בהצלחה');
+    } else {
+      // Create new user
+      await api('/users.php', {method:'POST', body:JSON.stringify({
+        username, full_name:fullName, email, password, role
+      })});
+      toast('✓ המשתמש נוסף בהצלחה');
+    }
+    $('#userModal').classList.remove('active');
+    renderUsers();
+  } catch(e){
+    toast('שגיאה: ' + e.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = editingUserId ? 'שמור שינויים' : 'הוסף משתמש';
+  }
+});
+
+
 (async function init(){
   // Check authentication
   try {
@@ -3411,6 +3670,11 @@ $('#logoutBtn').addEventListener('click', async () => {
     // Update user info in sidebar
     $('#userInfoName').textContent = currentUser.full_name;
     $('#userInfoRole').textContent = currentUser.role === 'admin' ? 'מנהל מערכת' : 'משתמש';
+    
+    // Show admin-only nav items if user is admin
+    if(currentUser.role === 'admin'){
+      $$('.admin-only').forEach(el => el.style.display = '');
+    }
   } catch(e) {
     // Not authenticated - redirected to login by api()
     return;
